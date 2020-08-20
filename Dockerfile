@@ -7,15 +7,16 @@ FROM debian
 ARG DEBIAN_FRONTEND=noninteractive
 
 # SETUP USER
-RUN adduser --disabled-password --gecos '' guild
-RUN adduser guild sudo
-RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
-RUN echo 'APT::Install-Recommends "false";' >> /etc/apt/apt.conf.d/00DisableInstallRecommends \
-&&  echo 'APT::AutoRemove::RecommendsImportant "false";' >> /etc/apt/apt.conf.d/00DisableInstallRecommends \
-&&  echo 'APT::AutoRemove::SuggestsImportant "false";' >> /etc/apt/apt.conf.d/00DisableInstallRecommends 
+RUN adduser --disabled-password --gecos '' guild \
+&& adduser guild sudo \
+&& echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers \
+&& echo 'APT::Install-Recommends "false";' >> /etc/apt/apt.conf.d/00DisableInstallRecommends \
+&& echo 'APT::AutoRemove::RecommendsImportant "false";' >> /etc/apt/apt.conf.d/00DisableInstallRecommends \
+&& echo 'APT::AutoRemove::SuggestsImportant "false";' >> /etc/apt/apt.conf.d/00DisableInstallRecommends \
+&& mkdir -p /home/guild/.cabal/bin/
 
-COPY --from=0 /root/.cabal* /home/guild/
-COPY --from=0 /root/.ghcup* /home/guild/ 
+COPY --from=0 /root/.cabal/bin/* /home/guild/.cabal/bin/
+
 # Install locales package
 RUN  apt-get update && apt-get install --no-install-recommends -y locales
 
@@ -33,7 +34,7 @@ ENV \
     LANGUAGE=en_US.UTF-8 \
     USER=guild \
     CNODE_HOME=/opt/cardano/cnode \
-    PATH=/nix/var/nix/profiles/per-user/guild/profile/bin:/nix/var/nix/profiles/per-user/guild/profile/sbin:/opt/cardano/cnode/scripts:/bin:/sbin:/usr/bin:/usr/sbin:/home/guild/.cabal/bin:/home/guild/.ghcup/bin  \
+    PATH=/nix/var/nix/profiles/per-user/guild/profile/bin:/nix/var/nix/profiles/per-user/guild/profile/sbin:/opt/cardano/cnode/scripts:/bin:/sbin:/usr/bin:/usr/sbin:/home/guild/.cabal/bin \
     GIT_SSL_CAINFO=/etc/ssl/certs/ca-certificates.crt \
     NIX_SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt \
     NIX_PATH=/nix/var/nix/profiles/per-user/guild/channels
@@ -97,12 +98,13 @@ RUN cd && git clone --quiet https://github.com/cardano-community/guild-operators
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/master-topology.sh ./
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/guild-topology.sh ./
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/entrypoint.sh ./
-RUN sudo chown -R guild:guild /home/guild/entrypoint.sh \
-    && sudo chown -R guild:guild $CNODE_HOME/files/* \
+RUN sudo chown -R guild:guild /home/guild/*.sh \
+    && sudo chown -R guild:guild $CNODE_HOME/* \
+    && sudo chown -R guild:guild /home/guild/.* \
     && sudo chmod a+x /home/guild/*.sh
 
 
-RUN sudo apt-get -y remove exim4 && sudo apt-get -y purge && sudo apt-get -y autoremove && sudo rm -rf /usr/bin/apt*
+RUN sudo apt-get -y remove exim4 && sudo apt-get -y purge && sudo apt-get -y clean && sudo apt-get -y autoremove && sudo rm -rf /usr/bin/apt*
 
 # CMD /bin/bash
 ENTRYPOINT ["./entrypoint.sh"]
