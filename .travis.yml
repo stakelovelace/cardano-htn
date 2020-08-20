@@ -4,7 +4,7 @@ services:
 env:
   global:
     - IMAGE_NAME=stakelovelace/cardano-htn
-    - EXPERIMENTAL=true
+    - DOCKER_CLI_EXPERIMENTAL=enabled
 before_script:
   - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 
