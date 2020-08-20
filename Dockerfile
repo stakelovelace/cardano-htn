@@ -1,12 +1,10 @@
 # FROM https://hydra.iohk.io/job/Cardano/cardano-node/cardano-node-linux/latest-finished
 # Latest Genesis: https://hydra.iohk.io/job/Cardano/cardano-node/cardano-deployment/latest-finished
 
-FROM stakelovelace/cardano-htn:stage2
-
 FROM debian
 ARG DEBIAN_FRONTEND=noninteractive
 
-COPY --from=0 /root/.cabal/bin/* /usr/local/bin/
+COPY --from=stakelovelace/cardano-htn:stage2 /root/.cabal/bin/* /usr/local/bin/
 RUN chmod a+x /usr/local/bin/*
 
 # Install locales package
