@@ -1,7 +1,6 @@
-# FROM https://hydra.iohk.io/job/Cardano/cardano-node/cardano-node-linux/latest-finished
-# Latest Genesis: https://hydra.iohk.io/job/Cardano/cardano-node/cardano-deployment/latest-finished
 
 FROM debian
+
 ARG DEBIAN_FRONTEND=noninteractive
 
 COPY --from=stakelovelace/cardano-htn:stage2 /root/.cabal/bin/* /usr/local/bin/
