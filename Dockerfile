@@ -5,6 +5,9 @@ FROM debian
 ARG DEBIAN_FRONTEND=noninteractive
 
 COPY --from=stakelovelace/cardano-htn:stage2 /root/.cabal/bin/* /usr/local/bin/
+COPY --from=stakelovelace/cardano-htn:stage2 /usr/lib /usr/lib
+COPY --from=stakelovelace/cardano-htn:stage2 /lib /lib
+COPY --from=stakelovelace/cardano-htn:stage2 /lib64 /lib64
 RUN chmod a+x /usr/local/bin/*
 
 # Install locales package
