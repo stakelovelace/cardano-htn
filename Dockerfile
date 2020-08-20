@@ -85,7 +85,7 @@ RUN cd && git clone --quiet https://github.com/cardano-community/guild-operators
     && cp -rf ~/guild-operators/scripts/* $CNODE_HOME/scripts \
     && cp -rf ~/guild-operators/files/* $CNODE_HOME/files \
     && rm -rf ~/guild-operators \
-    && rm /opt/cardano/cnode/files/byron-genesis.json  && rm /opt/cardano/cnode/files/genesis.json && if [[ -f /opt/cardano/cnode/files/config.json ]]; then rm /opt/cardano/cnode/files/config.json; else echo NO; fi \
+    && rm /opt/cardano/cnode/files/byron-genesis.json  && rm /opt/cardano/cnode/files/genesis.json && if [ -f /opt/cardano/cnode/files/config.json ]; then rm /opt/cardano/cnode/files/config.json; else echo NO; fi \
     && ln -s /opt/cardano/cnode/priv/files/mainnet-byron-genesis.json /opt/cardano/cnode/files/byron-genesis.json \
     && ln -s /opt/cardano/cnode/priv/files/mainnet-config.json /opt/cardano/cnode/files/config.json \
     && ln -s /opt/cardano/cnode/priv/files/mainnet-shelley-genesis.json /opt/cardano/cnode/files/genesis.json
