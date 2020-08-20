@@ -1,0 +1,19 @@
+sudo: required
+services:
+  - docker
+env:
+  global:
+    - IMAGE_NAME=stakelovelace/cardano-htn
+before_script:
+  - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+
+script:
+  - docker build --compress -t "${IMAGE_NAME}:master" .
+
+after_script:
+
+deploy:
+  provider: script
+  script: docker push "${IMAGE_NAME}:master"
+  on:
+    branch: master
