@@ -62,7 +62,7 @@ RUN adduser --disabled-password --gecos '' guild \
 && echo 'APT::AutoRemove::RecommendsImportant "false";' >> /etc/apt/apt.conf.d/00DisableInstallRecommends \
 && echo 'APT::AutoRemove::SuggestsImportant "false";' >> /etc/apt/apt.conf.d/00DisableInstallRecommends \
 && adduser guild sudo \ 
-&& sudo chown -R guild:guild /home/guild/.* 
+&& chown -R guild:guild /home/guild/.* 
 
 USER guild
 WORKDIR /home/guild
