@@ -8,7 +8,6 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 # SETUP USER
 RUN adduser --disabled-password --gecos '' guild \
-&& adduser guild sudo \
 && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers \
 && echo 'APT::Install-Recommends "false";' >> /etc/apt/apt.conf.d/00DisableInstallRecommends \
 && echo 'APT::AutoRemove::RecommendsImportant "false";' >> /etc/apt/apt.conf.d/00DisableInstallRecommends \
@@ -40,7 +39,9 @@ ENV \
     NIX_PATH=/nix/var/nix/profiles/per-user/guild/channels
 
 # PREREQ --no-install-recommends
-RUN apt-get update && apt-get install -y curl wget apt-utils xz-utils netbase sudo coreutils dnsutils net-tools procps cron tcptraceroute bc && sudo chown -R guild:guild /home/guild/.* 
+RUN apt-get update && apt-get install -y curl wget apt-utils xz-utils netbase sudo coreutils dnsutils net-tools procps cron tcptraceroute bc \
+    && adduser guild sudo \ 
+    && sudo chown -R guild:guild /home/guild/.* 
 
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/promtail.yml /etc/ 
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/promtail /etc/init.d/
