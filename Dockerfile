@@ -3,7 +3,20 @@
 
 FROM stakelovelace/cardano-htn:stage2
 
+FROM debian
 ARG DEBIAN_FRONTEND=noninteractive
+
+# SETUP USER
+RUN adduser --disabled-password --gecos '' guild
+RUN adduser guild sudo
+RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+RUN echo 'APT::Install-Recommends "false";' >> /etc/apt/apt.conf.d/00DisableInstallRecommends \
+&&  echo 'APT::AutoRemove::RecommendsImportant "false";' >> /etc/apt/apt.conf.d/00DisableInstallRecommends \
+&&  echo 'APT::AutoRemove::SuggestsImportant "false";' >> /etc/apt/apt.conf.d/00DisableInstallRecommends 
+
+COPY --from=0 /root/.cabal* /home/guild/
+COPY --from=0 /root/.ghcup* /home/guild/ 
+RUN sudo chown -R guild:guild /home/guild/.* 
 
 # Install locales package
 RUN  apt-get update && apt-get install --no-install-recommends -y locales
@@ -51,14 +64,6 @@ RUN cd /usr/bin \
 && sudo wget http://www.vdberg.org/~richard/tcpping \
 && sudo chmod 755 tcpping 
 
-# SETUP USER
-RUN adduser --disabled-password --gecos '' guild
-RUN adduser guild sudo
-RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
-RUN echo 'APT::Install-Recommends "false";' >> /etc/apt/apt.conf.d/00DisableInstallRecommends \
-&&  echo 'APT::AutoRemove::RecommendsImportant "false";' >> /etc/apt/apt.conf.d/00DisableInstallRecommends \
-&&  echo 'APT::AutoRemove::SuggestsImportant "false";' >> /etc/apt/apt.conf.d/00DisableInstallRecommends 
-
 USER guild
 WORKDIR /home/guild
 
@@ -89,11 +94,6 @@ RUN cd && git clone --quiet https://github.com/cardano-community/guild-operators
     && ln -s /opt/cardano/cnode/priv/files/mainnet-byron-genesis.json /opt/cardano/cnode/files/byron-genesis.json \
     && ln -s /opt/cardano/cnode/priv/files/mainnet-config.json /opt/cardano/cnode/files/config.json \
     && ln -s /opt/cardano/cnode/priv/files/mainnet-shelley-genesis.json /opt/cardano/cnode/files/genesis.json
-
-# HYDRA BINS
-RUN sudo cd /usr/bin \
-    sudo cp -rf /root/.cabal* /home/guild/ && sudo chown -R guild:guild /home/guild/.* \
-    sudo cp -rf /root/.ghcup* /home/guild/ && sudo chown -R guild:guild /home/guild/.* 
 
 # ENTRY SCRIPT
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/master-topology.sh ./
