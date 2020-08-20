@@ -16,8 +16,6 @@ RUN echo 'APT::Install-Recommends "false";' >> /etc/apt/apt.conf.d/00DisableInst
 
 COPY --from=0 /root/.cabal* /home/guild/
 COPY --from=0 /root/.ghcup* /home/guild/ 
-RUN sudo chown -R guild:guild /home/guild/.* 
-
 # Install locales package
 RUN  apt-get update && apt-get install --no-install-recommends -y locales
 
@@ -41,7 +39,7 @@ ENV \
     NIX_PATH=/nix/var/nix/profiles/per-user/guild/channels
 
 # PREREQ --no-install-recommends
-RUN apt-get update && apt-get install -y curl wget apt-utils xz-utils netbase sudo coreutils dnsutils net-tools procps cron tcptraceroute bc
+RUN apt-get update && apt-get install -y curl wget apt-utils xz-utils netbase sudo coreutils dnsutils net-tools procps cron tcptraceroute bc && sudo chown -R guild:guild /home/guild/.* 
 
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/promtail.yml /etc/ 
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/promtail /etc/init.d/
@@ -74,7 +72,7 @@ RUN sudo curl -sL https://nixos.org/nix/install | sh \
     && sudo crontab -u guild /etc/cron.d/crontab
 
 # INSTALL DEPS  
-RUN /nix/var/nix/profiles/per-user/guild/profile/bin/nix-env -i python3 systemd libsodium tmux jq bc ncurses libtool autoconf git wget gnupg column less openssl vim \
+RUN /nix/var/nix/profiles/per-user/guild/profile/bin/nix-env -i python3 systemd libsodium tmux jq ncurses libtool autoconf git wget gnupg column less openssl vim \
     && /nix/var/nix/profiles/per-user/guild/profile/bin/nix-channel --update \
     && /nix/var/nix/profiles/per-user/guild/profile/bin/nix-env -u --always \
     && /nix/var/nix/profiles/per-user/guild/profile/bin/nix-collect-garbage -d
