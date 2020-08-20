@@ -6,15 +6,8 @@ FROM stakelovelace/cardano-htn:stage2
 FROM debian
 ARG DEBIAN_FRONTEND=noninteractive
 
-# SETUP USER
-RUN adduser --disabled-password --gecos '' guild \
-&& echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers \
-&& echo 'APT::Install-Recommends "false";' >> /etc/apt/apt.conf.d/00DisableInstallRecommends \
-&& echo 'APT::AutoRemove::RecommendsImportant "false";' >> /etc/apt/apt.conf.d/00DisableInstallRecommends \
-&& echo 'APT::AutoRemove::SuggestsImportant "false";' >> /etc/apt/apt.conf.d/00DisableInstallRecommends \
-&& mkdir -p /home/guild/.cabal/bin/
-
-COPY --from=0 /root/.cabal/bin/* /home/guild/.cabal/bin/
+COPY --from=0 /root/.cabal/bin/* /usr/local/bin/
+RUN chmod a+x /usr/local/bin/*
 
 # Install locales package
 RUN  apt-get update && apt-get install --no-install-recommends -y locales
@@ -33,16 +26,14 @@ ENV \
     LANGUAGE=en_US.UTF-8 \
     USER=guild \
     CNODE_HOME=/opt/cardano/cnode \
-    PATH=/nix/var/nix/profiles/per-user/guild/profile/bin:/nix/var/nix/profiles/per-user/guild/profile/sbin:/opt/cardano/cnode/scripts:/bin:/sbin:/usr/bin:/usr/sbin:/home/guild/.cabal/bin \
+    PATH=/nix/var/nix/profiles/per-user/guild/profile/bin:/nix/var/nix/profiles/per-user/guild/profile/sbin:/opt/cardano/cnode/scripts:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/home/guild/.cabal/bin \
     GIT_SSL_CAINFO=/etc/ssl/certs/ca-certificates.crt \
     NIX_SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt \
     NIX_PATH=/nix/var/nix/profiles/per-user/guild/channels
 
 # PREREQ --no-install-recommends
-RUN apt-get update && apt-get install -y curl wget apt-utils xz-utils netbase sudo coreutils dnsutils net-tools procps cron tcptraceroute bc \
-    && adduser guild sudo \ 
-    && sudo chown -R guild:guild /home/guild/.* 
-
+RUN apt-get update && apt-get install -y curl wget apt-utils xz-utils netbase sudo coreutils dnsutils net-tools procps cron tcptraceroute bc 
+    
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/promtail.yml /etc/ 
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/promtail /etc/init.d/
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/crontab /etc/cron.d/crontab
@@ -63,6 +54,15 @@ RUN wget https://github.com/javadmohebbi/IP2Location/raw/master/dist/linux/amd64
 RUN cd /usr/bin \
 && sudo wget http://www.vdberg.org/~richard/tcpping \
 && sudo chmod 755 tcpping 
+
+# SETUP USER
+RUN adduser --disabled-password --gecos '' guild \
+&& echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers \
+&& echo 'APT::Install-Recommends "false";' >> /etc/apt/apt.conf.d/00DisableInstallRecommends \
+&& echo 'APT::AutoRemove::RecommendsImportant "false";' >> /etc/apt/apt.conf.d/00DisableInstallRecommends \
+&& echo 'APT::AutoRemove::SuggestsImportant "false";' >> /etc/apt/apt.conf.d/00DisableInstallRecommends \
+&& adduser guild sudo \ 
+&& sudo chown -R guild:guild /home/guild/.* 
 
 USER guild
 WORKDIR /home/guild
