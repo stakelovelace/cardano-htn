@@ -8,12 +8,12 @@ before_script:
   - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 
 script:
-  - docker build --compress -t "${IMAGE_NAME}:master" .
+  - docker build --compress -t "${IMAGE_NAME}:stage3" .
 
 after_script:
 
 deploy:
   provider: script
-  script: docker push "${IMAGE_NAME}:master"
+  script: docker push "${IMAGE_NAME}:stage3"
   on:
-    branch: master
+    branch: stage3
