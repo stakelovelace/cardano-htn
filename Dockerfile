@@ -81,7 +81,11 @@ RUN /nix/var/nix/profiles/per-user/guild/profile/bin/nix-env -i python3 systemd 
     && /nix/var/nix/profiles/per-user/guild/profile/bin/nix-collect-garbage -d
 
 # GUILD SKAffold
-RUN sudo mkdir -p $CNODE_HOME/files $CNODE_HOME/db $CNODE_HOME/logs $CNODE_HOME/scripts $CNODE_HOME/sockets $CNODE_HOME/priv \
+RUN sudo mkdir -p $CNODE_HOME/files $CNODE_HOME/db $CNODE_HOME/logs $CNODE_HOME/scripts $CNODE_HOME/sockets $CNODE_HOME/priv $CNODE_HOME/priv/files \
+    && curl -so $CNODE_HOME/priv/files/mainnet-shelley-genesis.json https://hydra.iohk.io/build/3670619/download/1/mainnet-shelley-genesis.json \
+    && curl -so $CNODE_HOME/priv/files/mainnet-byron-genesis.json https://hydra.iohk.io/build/3670619/download/1/mainnet-byron-genesis.json \
+    && curl -so $CNODE_HOME/priv/files/mainnet-config.json https://hydra.iohk.io/build/3670619/download/1/mainnet-config.json \
+    && curl -so $CNODE_HOME/priv/files/mainnet-topology.json https://hydra.iohk.io/build/3670619/download/1/mainnet-topology.json \
     && sudo chown -R guild:guild $CNODE_HOME \
     && chmod -R 755 $CNODE_HOME 
 
@@ -104,7 +108,7 @@ ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/entrypoi
 RUN sudo chown -R guild:guild /home/guild/*.sh \
     && sudo chown -R guild:guild $CNODE_HOME/* \
     && sudo chown -R guild:guild /home/guild/.* \
-    && sudo chmod a+x /home/guild/*.sh
+    && sudo chmod a+x /home/guild/*.sh $CNODE_HOME/scripts/*.sh
 
 RUN sudo apt-get -y remove exim4 && sudo apt-get -y purge && sudo apt-get -y clean && sudo apt-get -y autoremove && sudo rm -rf /var/lib/apt/lists/* && sudo rm -rf /usr/bin/apt* && sudo rm /nix/var/nix/profiles/per-user/guild/profile/bin/nix-* 
 
