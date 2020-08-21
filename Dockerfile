@@ -98,6 +98,7 @@ RUN cd && git clone --quiet https://github.com/cardano-community/guild-operators
 
 # ENTRY SCRIPT
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/master-topology.sh ./
+ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/ip2loc.sh ./
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/guild-topology.sh ./
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/entrypoint.sh ./
 RUN sudo chown -R guild:guild /home/guild/*.sh \
