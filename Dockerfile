@@ -106,9 +106,6 @@ RUN sudo chown -R guild:guild /home/guild/*.sh \
     && sudo chown -R guild:guild /home/guild/.* \
     && sudo chmod a+x /home/guild/*.sh
 
+RUN sudo apt-get -y remove exim4 && sudo apt-get -y purge && sudo apt-get -y clean && sudo apt-get -y autoremove && sudo rm -rf /var/lib/apt/lists/* && sudo rm -rf /usr/bin/apt* && sudo rm /nix/var/nix/profiles/per-user/guild/profile/bin/nix-* 
 
-RUN sudo apt-get -y remove exim4 && sudo apt-get -y purge && sudo apt-get -y clean && sudo apt-get -y autoremove && sudo rm -rf /usr/bin/apt*
-
-# CMD /bin/bash
 ENTRYPOINT ["./entrypoint.sh"]
-
