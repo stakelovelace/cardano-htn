@@ -13,6 +13,6 @@ RUN git clone https://github.com/input-output-hk/cardano-node.git \
   && cd cardano-node \
   && echo "package cardano-crypto-praos" > cabal.project.local \
   && echo "   flags: -external-libsodium-vrf" >> cabal.project.local \
-  && git fetch --tags --all && git pull && git status \
+  && git fetch --tags --all && git checkout tags/1.19.0 && git status \
   && bash $CNODE_HOME/scripts/cabal-build-all.sh \
   && cardano-node --version;
