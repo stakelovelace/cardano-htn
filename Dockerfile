@@ -56,7 +56,7 @@ RUN cd /usr/bin \
 && sudo wget http://www.vdberg.org/~richard/tcpping \
 && sudo chmod 755 tcpping 
 
-# SETUP USER
+# SETUP Guild USER 
 RUN adduser --disabled-password --gecos '' guild \
 && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers \
 && echo 'APT::Install-Recommends "false";' >> /etc/apt/apt.conf.d/00DisableInstallRecommends \
