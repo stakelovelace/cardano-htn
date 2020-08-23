@@ -90,6 +90,7 @@ ADD https://hydra.iohk.io/build/3670619/download/1/mainnet-topology.json $CNODE_
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/master-topology.sh ./
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/ip2loc.sh ./
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/guild-topology.sh ./
+ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/block_watcher.sh ./
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/entrypoint.sh ./
 RUN sudo chown -R guild:guild /home/guild/*.sh \
     && sudo chown -R guild:guild $CNODE_HOME/* \
