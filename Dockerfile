@@ -38,7 +38,7 @@ RUN apt-get update && apt-get install -y curl wget apt-utils xz-utils netbase su
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/promtail.yml /etc/ 
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/promtail /etc/init.d/
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/crontab /etc/cron.d/crontab
-RUN chmod a+x /etc/init.d/promtail && chmod 0600 /etc/cron.d/crontab && touch /var/log/cron.log 
+RUN chmod a+x /etc/init.d/promtail && chmod 0644 /etc/cron.d/crontab && touch /var/log/cron.log 
 
 # from https://github.com/grafana/loki/releases
 RUN cd /usr/local/bin \
