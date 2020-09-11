@@ -17,4 +17,3 @@ deploy:
   script: docker push "${IMAGE_NAME}:master"
   on:
     branch: master
- 
