@@ -12,6 +12,8 @@ jobs:
       - name: Fetch release version
         run: |
           curl -sL https://github.com/input-output-hk/cardano-node/releases/latest | grep "tag" | head -1 | sed -n -e 's/^.*tag\///p' | cut -d "\"" -f 1 > release-versions/cardano-node-latest.txt
+      - name: Assigns release version
+        run: |
           VERSION=$(cat ./release-versions/cardano-node-latest.txt)
       - name: Check for modified files
         id: git-check
