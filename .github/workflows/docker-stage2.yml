@@ -3,7 +3,7 @@ name: Docker Image CI Stage 2
 on:
   push:
     paths:
-      - 'release-versions/*'
+      - 'release-versions/cardano-node-latest.txt'
 jobs:
   build:
     runs-on: ubuntu-latest
