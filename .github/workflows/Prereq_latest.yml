@@ -1,4 +1,4 @@
-name: Get latest Guild Prereq release
+name: Get latest Prereq sha
 on:
   schedule:
     - cron:  '0 3 * * *'
