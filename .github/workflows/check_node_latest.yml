@@ -1,7 +1,7 @@
-name: Get latest release version
+name: Get latest Cardano Node release version
 on:
   schedule:
-    - cron:  '*/6 * * * *'
+    - cron:  '*/60 * * * *'
 jobs:
   get-version:
     runs-on: ubuntu-latest
