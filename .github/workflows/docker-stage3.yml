@@ -1,0 +1,24 @@
+name: Docker Image CI Stage 3
+
+on: workflow_dispatch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: docker login
+      env:
+        DOCKER_USER: ${{ secrets.DOCKER_USER }}   
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}  
+      run: |
+        docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+    - name: dockerfile Stage2 Download
+      run: |
+        curl -sLo Dockerstage3 https://raw.githubusercontent.com/stakelovelace/cardano-htn/stage3/Dockerfile ;
+    - name: Compiling new node software
+      run: |      
+        docker build . --file Dockerstage3 --tag stakelovelace/cardano-htn:stage3
+    - name: docker push
+      run: |
+        docker push stakelovelace/cardano-htn:stage3
