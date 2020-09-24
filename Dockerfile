@@ -1,5 +1,5 @@
 
-FROM debian
+FROM debian:stable-slim
 
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -11,14 +11,14 @@ COPY --from=stakelovelace/cardano-htn:stage2 /lib64 /lib64
 RUN chmod a+x /usr/local/bin/*
 
 # Install locales package
-RUN  apt-get update && apt-get install --no-install-recommends -y locales
+#RUN  apt-get update && apt-get install --no-install-recommends -y locales
 
 # Uncomment en_US.UTF-8 for inclusion in generation
-RUN sed -i 's/^# *\(en_US.UTF-8\)/\1/' /etc/locale.gen \
-    && locale-gen \
-    && echo "export LC_ALL=en_US.UTF-8" >> ~/.bashrc \
-    && echo "export LANG=en_US.UTF-8" >> ~/.bashrc \
-    && echo "export LANGUAGE=en_US.UTF-8" >> ~/.bashrc
+#RUN sed -i 's/^# *\(en_US.UTF-8\)/\1/' /etc/locale.gen \
+#    && locale-gen \
+#    && echo "export LC_ALL=en_US.UTF-8" >> ~/.bashrc \
+#    && echo "export LANG=en_US.UTF-8" >> ~/.bashrc \
+#    && echo "export LANGUAGE=en_US.UTF-8" >> ~/.bashrc
 
 ENV \
     ENV=/etc/profile \
