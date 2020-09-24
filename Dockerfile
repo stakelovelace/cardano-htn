@@ -18,12 +18,12 @@ RUN chmod a+x /usr/local/bin/*
 #    && echo "export LC_ALL=en_US.UTF-8" >> ~/.bashrc \
 #    && echo "export LANG=en_US.UTF-8" >> ~/.bashrc \
 #    && echo "export LANGUAGE=en_US.UTF-8" >> ~/.bashrc
+#     LC_ALL=en_US.UTF-8 \
+#    LANG=en_US.UTF-8 \
+#    LANGUAGE=en_US.UTF-8 \
 
 ENV \
     ENV=/etc/profile \
-    LC_ALL=en_US.UTF-8 \
-    LANG=en_US.UTF-8 \
-    LANGUAGE=en_US.UTF-8 \
     USER=guild \
     CNODE_HOME=/opt/cardano/cnode \
     PATH=/nix/var/nix/profiles/per-user/guild/profile/bin:/nix/var/nix/profiles/per-user/guild/profile/sbin:/opt/cardano/cnode/scripts:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/home/guild/.cabal/bin \
