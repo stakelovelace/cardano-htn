@@ -23,5 +23,5 @@ jobs:
         run: |
           git config --global user.name ${{ secrets.REPO_SCOPED_USER }}
           git config --global user.email ${{ secrets.REPO_SCOPED_EMAIL }}
-          git commit -am "New prereq released sha: ${GVERSION}"
+          git commit -am "New prereq released sha: $GVERSION"
           git push
