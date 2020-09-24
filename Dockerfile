@@ -12,18 +12,18 @@ RUN chmod a+x /usr/local/bin/*
 # Install locales package
 #RUN  apt-get update && apt-get install --no-install-recommends -y locales
 
-# Uncomment en_US.UTF-8 for inclusion in generation
-#RUN sed -i 's/^# *\(en_US.UTF-8\)/\1/' /etc/locale.gen \
-#    && locale-gen \
-#    && echo "export LC_ALL=en_US.UTF-8" >> ~/.bashrc \
-#    && echo "export LANG=en_US.UTF-8" >> ~/.bashrc \
-#    && echo "export LANGUAGE=en_US.UTF-8" >> ~/.bashrc
-#     LC_ALL=en_US.UTF-8 \
-#    LANG=en_US.UTF-8 \
-#    LANGUAGE=en_US.UTF-8 \
+#  en_US.UTF-8 for inclusion in generation
+RUN sed -i 's/^# *\(en_US.UTF-8\)/\1/' /etc/locale.gen \
+    && locale-gen \
+    && echo "export LC_ALL=en_US.UTF-8" >> ~/.bashrc \
+    && echo "export LANG=en_US.UTF-8" >> ~/.bashrc \
+    && echo "export LANGUAGE=en_US.UTF-8" >> ~/.bashrc
 
 ENV \
     ENV=/etc/profile \
+    LC_ALL=en_US.UTF-8 \
+    LANG=en_US.UTF-8 \
+    LANGUAGE=en_US.UTF-8 \
     USER=guild \
     CNODE_HOME=/opt/cardano/cnode \
     PATH=/nix/var/nix/profiles/per-user/guild/profile/bin:/nix/var/nix/profiles/per-user/guild/profile/sbin:/opt/cardano/cnode/scripts:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/home/guild/.cabal/bin \
@@ -103,6 +103,7 @@ RUN cd && git clone --quiet https://github.com/cardano-community/guild-operators
     && ln -s /opt/cardano/cnode/priv/files/mainnet-shelley-genesis.json /opt/cardano/cnode/files/genesis.json \
     && sudo chmod a+x /home/guild/.scripts/*.sh $CNODE_HOME/scripts/*.sh /home/guild/*.sh
 
-RUN sudo apt-get -y remove exim4 && sudo apt-get -y purge && sudo apt-get -y clean && sudo apt-get -y autoremove && sudo rm -rf /var/lib/apt/lists/* # && sudo rm -rf /usr/bin/apt* && sudo rm /nix/var/nix/profiles/per-user/guild/profile/bin/nix-* 
+RUN sudo apt-get -y remove exim4 && sudo apt-get -y purge && sudo apt-get -y clean && sudo apt-get -y autoremove 
+# && sudo rm -rf /var/lib/apt/lists/* # && sudo rm -rf /usr/bin/apt* && sudo rm /nix/var/nix/profiles/per-user/guild/profile/bin/nix-* 
 
 ENTRYPOINT ["./entrypoint.sh"]
