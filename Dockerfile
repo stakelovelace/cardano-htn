@@ -81,19 +81,18 @@ RUN /nix/var/nix/profiles/per-user/guild/profile/bin/nix-env -i python3 systemd 
     && /nix/var/nix/profiles/per-user/guild/profile/bin/nix-collect-garbage -d
 
 # GUILD SKAffold
-RUN sudo mkdir -p $CNODE_HOME/files $CNODE_HOME/db $CNODE_HOME/logs $CNODE_HOME/scripts $CNODE_HOME/sockets $CNODE_HOME/priv/files 
+RUN sudo mkdir -p $CNODE_HOME/files $CNODE_HOME/db $CNODE_HOME/db/blocks $CNODE_HOME/logs $CNODE_HOME/scripts $CNODE_HOME/sockets $CNODE_HOME/priv/files 
 # ENTRY SCRIPT
 ADD https://hydra.iohk.io/build/3670619/download/1/mainnet-shelley-genesis.json $CNODE_HOME/priv/files/
 ADD https://hydra.iohk.io/build/3670619/download/1/mainnet-byron-genesis.json $CNODE_HOME/priv/files/
 ADD https://hydra.iohk.io/build/3670619/download/1/mainnet-config.json $CNODE_HOME/priv/files/
 ADD https://hydra.iohk.io/build/3670619/download/1/mainnet-topology.json $CNODE_HOME/priv/files/
-ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/master-topology.sh ./
-ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/ip2loc.sh ./
-ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/guild-topology.sh ./
-ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/block_watcher.sh ./
+ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/master-topology.sh /home/guild/.scripts/
+ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/ip2loc.sh /home/guild/.scripts/
+ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/guild-topology.sh /home/guild/.scripts/
+ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/block_watcher.sh /home/guild/.scripts/
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/entrypoint.sh ./
-RUN sudo chown -R guild:guild /home/guild/*.sh \
-    && sudo chown -R guild:guild $CNODE_HOME/* \
+RUN sudo chown -R guild:guild $CNODE_HOME/* \
     && sudo chown -R guild:guild /home/guild/.* 
 
 # GUILD SCRIPTS
@@ -106,7 +105,7 @@ RUN cd && git clone --quiet https://github.com/cardano-community/guild-operators
     && ln -s /opt/cardano/cnode/priv/files/mainnet-byron-genesis.json /opt/cardano/cnode/files/byron-genesis.json \
     && ln -s /opt/cardano/cnode/priv/files/mainnet-config.json /opt/cardano/cnode/files/config.json \
     && ln -s /opt/cardano/cnode/priv/files/mainnet-shelley-genesis.json /opt/cardano/cnode/files/genesis.json \
-    && sudo chmod a+x /home/guild/*.sh $CNODE_HOME/scripts/*.sh
+    && sudo chmod a+x /home/guild/.scripts/*.sh $CNODE_HOME/scripts/*.sh /home/guild/*.sh
 
 RUN sudo apt-get -y remove exim4 && sudo apt-get -y purge && sudo apt-get -y clean && sudo apt-get -y autoremove && sudo rm -rf /var/lib/apt/lists/* # && sudo rm -rf /usr/bin/apt* && sudo rm /nix/var/nix/profiles/per-user/guild/profile/bin/nix-* 
 
