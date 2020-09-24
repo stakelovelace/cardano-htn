@@ -32,7 +32,7 @@ ENV \
     NIX_PATH=/nix/var/nix/profiles/per-user/guild/channels
 
 # PREREQ --no-install-recommends
-RUN apt-get update && apt-get install -y libcap2-bin ncurses-bin curl wget apt-utils xz-utils netbase sudo coreutils dnsutils net-tools procps cron tcptraceroute bc 
+RUN apt-get update && apt-get install -y libcap2-bin ncurses-bin iproute2 curl wget apt-utils xz-utils netbase sudo coreutils dnsutils net-tools procps cron tcptraceroute bc 
     
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/promtail.yml /etc/ 
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/promtail /etc/init.d/
