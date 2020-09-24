@@ -10,7 +10,7 @@ COPY --from=stakelovelace/cardano-htn:stage2 /lib64 /lib64
 RUN chmod a+x /usr/local/bin/*
 
 # Install locales package
-#RUN  apt-get update && apt-get install --no-install-recommends -y locales
+RUN  apt-get update && apt-get install --no-install-recommends -y locales
 
 #  en_US.UTF-8 for inclusion in generation
 RUN sed -i 's/^# *\(en_US.UTF-8\)/\1/' /etc/locale.gen \
