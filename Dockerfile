@@ -32,7 +32,7 @@ ENV \
     NIX_PATH=/nix/var/nix/profiles/per-user/guild/channels
 
 # PREREQ --no-install-recommends
-RUN apt-get update && apt-get install -y curl wget apt-utils xz-utils netbase sudo coreutils dnsutils net-tools procps cron tcptraceroute bc 
+RUN apt-get update && apt-get install -y libcap2-bin ncurses-bin curl wget apt-utils xz-utils netbase sudo coreutils dnsutils net-tools procps cron tcptraceroute bc 
     
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/promtail.yml /etc/ 
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/promtail /etc/init.d/
@@ -58,9 +58,6 @@ RUN cd /usr/bin \
 # SETUP Guild USER 
 RUN adduser --disabled-password --gecos '' guild \
 && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers \
-&& echo 'APT::Install-Recommends "false";' >> /etc/apt/apt.conf.d/00DisableInstallRecommends \
-&& echo 'APT::AutoRemove::RecommendsImportant "false";' >> /etc/apt/apt.conf.d/00DisableInstallRecommends \
-&& echo 'APT::AutoRemove::SuggestsImportant "false";' >> /etc/apt/apt.conf.d/00DisableInstallRecommends \
 && adduser guild sudo \ 
 && chown -R guild:guild /home/guild/.* 
 
