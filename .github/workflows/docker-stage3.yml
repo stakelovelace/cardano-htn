@@ -18,7 +18,7 @@ jobs:
         curl -sLo Dockerstage3 https://raw.githubusercontent.com/stakelovelace/cardano-htn/stage3/Dockerfile ;
     - name: Compiling new node software
       run: |      
-        docker build . --file Dockerstage3 --tag stakelovelace/cardano-htn:stage3
+        docker build . --file Dockerstage3 --compress --tag stakelovelace/cardano-htn:stage3
     - name: docker push
       run: |
         docker push stakelovelace/cardano-htn:stage3
