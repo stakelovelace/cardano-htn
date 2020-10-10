@@ -17,7 +17,7 @@ jobs:
         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
     - name: Compiling new node software
       run: |      
-        docker build . --tag stakelovelace/cardano-htn:stage1
+        docker build . --compress --tag stakelovelace/cardano-htn:stage1
     - name: docker push
       run: |
         docker push stakelovelace/cardano-htn:stage1
