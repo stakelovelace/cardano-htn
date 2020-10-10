@@ -15,10 +15,12 @@ jobs:
         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
     - name: dockerfile Stage2 Download
       run: |
-        curl -sLo Dockerstage3 https://raw.githubusercontent.com/stakelovelace/cardano-htn/stage3/Dockerfile ;
+        curl -sLo Dockerstage3 https://raw.githubusercontent.com/stakelovelace/cardano-htn/stage3/Dockerfile
     - name: Compiling new node software
       run: |      
         docker build . --file Dockerstage3 --compress --tag stakelovelace/cardano-htn:stage3
     - name: docker push
       run: |
         docker push stakelovelace/cardano-htn:stage3
+        docker tag stakelovelace/cardano-htn:stage3 stakelovelace/cardano-node:latest
+        docker push stakelovelace/cardano-node:latest
