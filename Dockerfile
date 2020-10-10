@@ -17,5 +17,5 @@ RUN git clone https://github.com/input-output-hk/cardano-node.git \
   && echo "   flags: -external-libsodium-vrf" >> cabal.project.local \
   && git fetch --tags --all && git checkout tags/$CNVERSION \
   && bash $CNODE_HOME/scripts/cabal-build-all.sh \
-  && apt-get -y remove libpq-dev build-essential pkg-config libffi-dev libgmp-dev libssl-dev libtinfo-dev libsystemd-dev zlib1g-dev make g++ && apt-get -y remove exim4 && apt-get -y purge && apt-get -y clean && apt-get -y autoremove \
+  && apt-get -y remove libpq-dev build-essential pkg-config libffi-dev libgmp-dev libssl-dev libtinfo-dev libsystemd-dev zlib1g-dev make g++ && apt-get -y purge && apt-get -y clean && apt-get -y autoremove \
   && cardano-node --version;
