@@ -18,4 +18,4 @@ RUN git clone https://github.com/input-output-hk/cardano-node.git \
   && git fetch --tags --all && git checkout tags/$CNVERSION \
   && bash $CNODE_HOME/scripts/cabal-build-all.sh \
   && apt-get -y remove libpq-dev build-essential pkg-config libffi-dev libgmp-dev libssl-dev libtinfo-dev libsystemd-dev zlib1g-dev make g++ && apt-get -y purge && apt-get -y clean && apt-get -y autoremove \
-  && cardano-node --version;
+  && cardano-node --version; 
