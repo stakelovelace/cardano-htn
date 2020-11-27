@@ -3,12 +3,13 @@ FROM debian:stable-slim
 ARG DEBIAN_FRONTEND=noninteractive
 
 # COPY NODE BINS AND DEPS 
-COPY --from=cardanocommunity/cardano-node:stage2 /root/.cabal/bin/* /usr/local/bin/
-COPY --from=cardanocommunity/cardano-node:stage2 /lib/x86_64-linux-gnu/lib* /lib/x86_64-linux-gnu/
-COPY --from=cardanocommunity/cardano-node:stage2 /lib64/ld-linux-x86-64* /lib64/
-COPY --from=cardanocommunity/cardano-node:stage2 /usr/lib/x86_64-linux-gnu/libgmp.* /usr/lib/x86_64-linux-gnu/
-COPY --from=cardanocommunity/cardano-node:stage2 /usr/lib/x86_64-linux-gnu/liblz4.* /usr/lib/x86_64-linux-gnu/
-COPY --from=cardanocommunity/cardano-node:stage2 /usr/lib/x86_64-linux-gnu/libsodium.* /usr/lib/x86_64-linux-gnu/
+COPY --from=stakelovelace/cardano-htn:stage2 /root/.cabal/bin/* /usr/local/bin/
+COPY --from=stakelovelace/cardano-htn:stage2 /lib/x86_64-linux-gnu/lib* /lib/x86_64-linux-gnu/
+COPY --from=stakelovelace/cardano-htn:stage2 /lib64/ld-linux-x86-64* /lib64/
+COPY --from=stakelovelace/cardano-htn:stage2 /usr/lib/x86_64-linux-gnu/libgmp.* /usr/lib/x86_64-linux-gnu/
+COPY --from=stakelovelace/cardano-htn:stage2 /usr/lib/x86_64-linux-gnu/liblz4.* /usr/lib/x86_64-linux-gnu/
+COPY --from=stakelovelace/cardano-htn:stage2 /usr/lib/x86_64-linux-gnu/libsodium.* /usr/lib/x86_64-linux-gnu/
+COPY --from=stakelovelace/cardano-htn:stage2 /opt/* /opt/
 
 RUN chmod a+x /usr/local/bin/*
 
@@ -99,16 +100,16 @@ RUN sudo chown -R guild:guild $CNODE_HOME/* \
     && sudo chown -R guild:guild /home/guild/.* 
 
 # GUILD SCRIPTS
-RUN cd && git clone --quiet https://github.com/cardano-community/guild-operators.git \
-    && cp -rf ~/guild-operators/scripts/cnode-helper-scripts/* $CNODE_HOME/scripts \
-    && cp -rf ~/guild-operators/scripts/* $CNODE_HOME/scripts \
-    && cp -rf ~/guild-operators/files/* $CNODE_HOME/files \
-    && rm -rf ~/guild-operators \
-    && rm /opt/cardano/cnode/files/byron-genesis.json  && rm /opt/cardano/cnode/files/genesis.json && if [ -f /opt/cardano/cnode/files/config.json ]; then rm /opt/cardano/cnode/files/config.json; else echo NO; fi \
-    && ln -s /opt/cardano/cnode/priv/files/mainnet-byron-genesis.json /opt/cardano/cnode/files/byron-genesis.json \
-    && ln -s /opt/cardano/cnode/priv/files/mainnet-config.json /opt/cardano/cnode/files/config.json \
-    && ln -s /opt/cardano/cnode/priv/files/mainnet-shelley-genesis.json /opt/cardano/cnode/files/genesis.json \
-    && sudo chmod a+x /home/guild/.scripts/*.sh $CNODE_HOME/scripts/*.sh /home/guild/*.sh
+#RUN cd && git clone --quiet https://github.com/cardano-community/guild-operators.git \
+#    && cp -rf ~/guild-operators/scripts/cnode-helper-scripts/* $CNODE_HOME/scripts \
+#    && cp -rf ~/guild-operators/scripts/* $CNODE_HOME/scripts \
+#    && cp -rf ~/guild-operators/files/* $CNODE_HOME/files \
+#    && rm -rf ~/guild-operators \
+#    && rm /opt/cardano/cnode/files/byron-genesis.json  && rm /opt/cardano/cnode/files/genesis.json && if [ -f /opt/cardano/cnode/files/config.json ]; then rm /opt/cardano/cnode/files/config.json; else echo NO; fi \
+#    && ln -s /opt/cardano/cnode/priv/files/mainnet-byron-genesis.json /opt/cardano/cnode/files/byron-genesis.json \
+#    && ln -s /opt/cardano/cnode/priv/files/mainnet-config.json /opt/cardano/cnode/files/config.json \
+#    && ln -s /opt/cardano/cnode/priv/files/mainnet-shelley-genesis.json /opt/cardano/cnode/files/genesis.json \
+RUN sudo chmod a+x /home/guild/.scripts/*.sh $CNODE_HOME/scripts/*.sh /home/guild/*.sh
 
 RUN sudo apt-get -y remove exim4 && sudo rm -rf /etc/rc5.d/S*exim4 /etc/rc6.d/K*exim4 /usr/sbin/exim* && sudo apt-get -y purge && sudo apt-get -y clean && sudo apt-get -y autoremove && sudo rm -rf /var/lib/apt/lists/* # && sudo rm -rf /usr/bin/apt* && sudo rm /nix/var/nix/profiles/per-user/guild/profile/bin/nix-* 
 
