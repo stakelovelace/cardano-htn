@@ -66,7 +66,7 @@ RUN cd /usr/bin \
 RUN adduser --disabled-password --gecos '' guild \
 && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers \
 && adduser guild sudo \ 
-&& chown -R guild:guild /home/guild/.* && ls /opt/
+&& chown -R guild:guild /home/guild/.*
 
 USER guild
 WORKDIR /home/guild
@@ -77,7 +77,7 @@ RUN sudo curl -sL https://nixos.org/nix/install | sh \
     && . /home/guild/.nix-profile/etc/profile.d/nix.sh \
     && sudo crontab -u guild /etc/cron.d/crontab \
     && echo "alias cntools=$CNODE_HOME/scripts/cntools.sh" >> ~/.bashrc \
-    && echo "alias cntools=$CNODE_HOME/scripts/gLiveView.sh" >> ~/.bashrc
+    && echo "alias gLiveView=$CNODE_HOME/scripts/gLiveView.sh" >> ~/.bashrc
 
 # INSTALL DEPS  
 RUN /nix/var/nix/profiles/per-user/guild/profile/bin/nix-env -i python3 systemd libsodium tmux jq ncurses libtool autoconf git wget gnupg column less openssl vim \
@@ -98,7 +98,7 @@ ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/entrypoi
 
 RUN sudo chown -R guild:guild $CNODE_HOME/* \
     && sudo chown -R guild:guild /home/guild/.* \
-    && sudo chmod a+x /home/guild/.scripts/*.sh /home/guild/entrypoint.sh && ls /opt/
+    && sudo chmod a+x /home/guild/.scripts/*.sh /home/guild/entrypoint.sh
 
 RUN sudo apt-get -y remove exim4 && sudo rm -rf /etc/rc5.d/S*exim4 /etc/rc6.d/K*exim4 /usr/sbin/exim* && sudo apt-get -y purge && sudo apt-get -y clean && sudo apt-get -y autoremove && sudo rm -rf /var/lib/apt/lists/* # && sudo rm -rf /usr/bin/apt* && sudo rm /nix/var/nix/profiles/per-user/guild/profile/bin/nix-* 
 
