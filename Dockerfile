@@ -7,7 +7,6 @@ ENV \
     LC_ALL=en_US.UTF-8 \
     LANG=en_US.UTF-8 \
     LANGUAGE=en_US.UTF-8 \
-    USER=guild \
     CNODE_HOME=/opt/cardano/cnode \
     PATH=/nix/var/nix/profiles/per-user/guild/profile/bin:/nix/var/nix/profiles/per-user/guild/profile/sbin:/opt/cardano/cnode/scripts:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/home/guild/.cabal/bin \
     GIT_SSL_CAINFO=/etc/ssl/certs/ca-certificates.crt \
@@ -26,7 +25,7 @@ COPY --from=stakelovelace/cardano-htn:stage2 /usr/lib/x86_64-linux-gnu/liblz4.* 
 COPY --from=stakelovelace/cardano-htn:stage2 /usr/lib/x86_64-linux-gnu/libsodium.* /usr/lib/x86_64-linux-gnu/
 COPY --from=stakelovelace/cardano-htn:stage2 /opt/cardano /opt/
 
-RUN chmod a+x /usr/local/bin/* && ls -l /opt/* \
+RUN chmod a+x /usr/local/bin/* && ls /opt/ \
     && mkdir -p $CNODE_HOME/priv/files 
     
 #$CNODE_HOME/scripts/*.sh
@@ -52,7 +51,7 @@ RUN chmod a+x /etc/init.d/promtail && chmod 0644 /etc/cron.d/crontab && touch /v
 RUN cd /usr/local/bin \
 && curl -fSL -o promtail.gz "https://github.com/grafana/loki/releases/download/v1.5.0/promtail-linux-amd64.zip" \
 && gunzip promtail.gz \
-&& chmod a+x promtail 
+&& chmod a+x promtail && ls /opt/
 
 RUN wget https://github.com/javadmohebbi/IP2Location/raw/master/dist/linux/amd64/ip2location \
 && mv ip2location /usr/local/bin/ -v \
@@ -68,7 +67,7 @@ RUN cd /usr/bin \
 RUN adduser --disabled-password --gecos '' guild \
 && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers \
 && adduser guild sudo \ 
-&& chown -R guild:guild /home/guild/.* 
+&& chown -R guild:guild /home/guild/.* && ls /opt/
 
 USER guild
 WORKDIR /home/guild
@@ -100,7 +99,7 @@ ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/entrypoi
 
 RUN sudo chown -R guild:guild $CNODE_HOME/* \
     && sudo chown -R guild:guild /home/guild/.* \
-    && sudo chmod a+x /home/guild/.scripts/*.sh /home/guild/entrypoint.sh
+    && sudo chmod a+x /home/guild/.scripts/*.sh /home/guild/entrypoint.sh && ls /opt/
 
 RUN sudo apt-get -y remove exim4 && sudo rm -rf /etc/rc5.d/S*exim4 /etc/rc6.d/K*exim4 /usr/sbin/exim* && sudo apt-get -y purge && sudo apt-get -y clean && sudo apt-get -y autoremove && sudo rm -rf /var/lib/apt/lists/* # && sudo rm -rf /usr/bin/apt* && sudo rm /nix/var/nix/profiles/per-user/guild/profile/bin/nix-* 
 
