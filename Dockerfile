@@ -8,8 +8,8 @@ ENV \
     LANG=en_US.UTF-8 \
     LANGUAGE=en_US.UTF-8 \
     USER=guild \
-    CNODE_HOME=/opt/cnode \
-    PATH=/nix/var/nix/profiles/per-user/guild/profile/bin:/nix/var/nix/profiles/per-user/guild/profile/sbin:/opt/cnode/scripts:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/home/guild/.cabal/bin \
+    CNODE_HOME=/opt/cardano/cnode \
+    PATH=/nix/var/nix/profiles/per-user/guild/profile/bin:/nix/var/nix/profiles/per-user/guild/profile/sbin:/opt/cardano/cnode/scripts:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/home/guild/.cabal/bin \
     GIT_SSL_CAINFO=/etc/ssl/certs/ca-certificates.crt \
     NIX_SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt \
     NIX_PATH=/nix/var/nix/profiles/per-user/guild/channels
@@ -21,9 +21,9 @@ COPY --from=stakelovelace/cardano-htn:stage2 /lib64/ld-linux-x86-64* /lib64/
 COPY --from=stakelovelace/cardano-htn:stage2 /usr/lib/x86_64-linux-gnu/libgmp.* /usr/lib/x86_64-linux-gnu/
 COPY --from=stakelovelace/cardano-htn:stage2 /usr/lib/x86_64-linux-gnu/liblz4.* /usr/lib/x86_64-linux-gnu/
 COPY --from=stakelovelace/cardano-htn:stage2 /usr/lib/x86_64-linux-gnu/libsodium.* /usr/lib/x86_64-linux-gnu/
-COPY --from=stakelovelace/cardano-htn:stage2 /opt/* /opt/
+COPY --from=stakelovelace/cardano-htn:stage2 /opt /
 
-RUN chmod a+x /usr/local/bin/* \
+RUN chmod a+x /usr/local/bin/* && ls -l /opt/* \
     && mkdir -p $CNODE_HOME/priv/files 
     
 #$CNODE_HOME/scripts/*.sh
@@ -74,7 +74,9 @@ WORKDIR /home/guild
 RUN sudo curl -sL https://nixos.org/nix/install | sh \
     && sudo ln -s /nix/var/nix/profiles/per-user/etc/profile.d/nix.sh /etc/profile.d/ \
     && . /home/guild/.nix-profile/etc/profile.d/nix.sh \
-    && sudo crontab -u guild /etc/cron.d/crontab
+    && sudo crontab -u guild /etc/cron.d/crontab \
+    && echo "alias cntools=$CNODE_HOME/scripts/cntools.sh" >> ~/.bashrc \
+    && echo "alias cntools=$CNODE_HOME/scripts/gLiveView.sh" >> ~/.bashrc
 
 # INSTALL DEPS  
 RUN /nix/var/nix/profiles/per-user/guild/profile/bin/nix-env -i python3 systemd libsodium tmux jq ncurses libtool autoconf git wget gnupg column less openssl vim \
