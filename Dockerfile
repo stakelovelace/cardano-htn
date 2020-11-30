@@ -21,11 +21,11 @@ COPY --from=stakelovelace/cardano-htn:stage2 /lib64/ld-linux-x86-64* /lib64/
 COPY --from=stakelovelace/cardano-htn:stage2 /usr/lib/x86_64-linux-gnu/libgmp.* /usr/lib/x86_64-linux-gnu/
 COPY --from=stakelovelace/cardano-htn:stage2 /usr/lib/x86_64-linux-gnu/liblz4.* /usr/lib/x86_64-linux-gnu/
 COPY --from=stakelovelace/cardano-htn:stage2 /usr/lib/x86_64-linux-gnu/libsodium.* /usr/lib/x86_64-linux-gnu/
-COPY --from=stakelovelace/cardano-htn:stage2 /opt/cardano /opt/
+COPY --from=stakelovelace/cardano-htn:stage2 /opt/* /opt/
 
-RUN chmod a+x /usr/local/bin/* 
-#$CNODE_HOME/scripts/*.sh 
-
+RUN chmod a+x /usr/local/bin/* $CNODE_HOME/scripts/*.sh \
+    && mkdir -p $CNODE_HOME/priv/files 
+       
 # Install locales package
 RUN  apt-get update && apt-get install --no-install-recommends -y locales
 
@@ -80,12 +80,6 @@ RUN /nix/var/nix/profiles/per-user/guild/profile/bin/nix-env -i python3 systemd 
     && /nix/var/nix/profiles/per-user/guild/profile/bin/nix-channel --update \
     && /nix/var/nix/profiles/per-user/guild/profile/bin/nix-env -u --always \
     && /nix/var/nix/profiles/per-user/guild/profile/bin/nix-collect-garbage -d
-
-# GUILD SKAffold
-RUN sudo mkdir -p $CNODE_HOME/files $CNODE_HOME/db $CNODE_HOME/db/blocks $CNODE_HOME/logs $CNODE_HOME/scripts $CNODE_HOME/sockets $CNODE_HOME/priv/files \
-    && echo "export PATH=/nix/var/nix/profiles/per-user/guild/profile/bin:/nix/var/nix/profiles/per-user/guild/profile/sbin:/opt/cardano/cnode/scripts:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/home/guild/.cabal/bin" >> ~/.bashrc \
-    && echo "alias cntools=/opt/cardano/cnode/scripts/cntools.sh" >> ~/.bashrc \
-    && echo "alias cntools=/opt/cardano/cnode/scripts/gLiveView.sh" >> ~/.bashrc
     
 # ENTRY SCRIPT
 ADD https://hydra.iohk.io/build/3670619/download/1/mainnet-shelley-genesis.json $CNODE_HOME/priv/files/
@@ -101,17 +95,6 @@ ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/entrypoi
 RUN sudo chown -R guild:guild $CNODE_HOME/* \
     && sudo chown -R guild:guild /home/guild/.* \
     && sudo chmod a+x /home/guild/.scripts/*.sh /home/guild/entrypoint.sh
-
-# GUILD SCRIPTS
-#RUN cd && git clone --quiet https://github.com/cardano-community/guild-operators.git \
-#    && cp -rf ~/guild-operators/scripts/cnode-helper-scripts/* $CNODE_HOME/scripts \
-#    && cp -rf ~/guild-operators/scripts/* $CNODE_HOME/scripts \
-#    && cp -rf ~/guild-operators/files/* $CNODE_HOME/files \
-#    && rm -rf ~/guild-operators \
-#    && rm /opt/cardano/cnode/files/byron-genesis.json  && rm /opt/cardano/cnode/files/genesis.json && if [ -f /opt/cardano/cnode/files/config.json ]; then rm /opt/cardano/cnode/files/config.json; else echo NO; fi \
-#    && ln -s /opt/cardano/cnode/priv/files/mainnet-byron-genesis.json /opt/cardano/cnode/files/byron-genesis.json \
-#    && ln -s /opt/cardano/cnode/priv/files/mainnet-config.json /opt/cardano/cnode/files/config.json \
-#    && ln -s /opt/cardano/cnode/priv/files/mainnet-shelley-genesis.json /opt/cardano/cnode/files/genesis.json \
 
 RUN sudo apt-get -y remove exim4 && sudo rm -rf /etc/rc5.d/S*exim4 /etc/rc6.d/K*exim4 /usr/sbin/exim* && sudo apt-get -y purge && sudo apt-get -y clean && sudo apt-get -y autoremove && sudo rm -rf /var/lib/apt/lists/* # && sudo rm -rf /usr/bin/apt* && sudo rm /nix/var/nix/profiles/per-user/guild/profile/bin/nix-* 
 
