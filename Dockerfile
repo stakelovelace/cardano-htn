@@ -28,7 +28,6 @@ COPY --from=stakelovelace/cardano-htn:stage2 /opt/cardano /opt/
 RUN chmod a+x /usr/local/bin/* && ls /opt/ \
     && mkdir -p $CNODE_HOME/priv/files 
     
-#$CNODE_HOME/scripts/*.sh
 # Install locales package
 RUN  apt-get update && apt-get install --no-install-recommends -y locales
 
