@@ -23,7 +23,7 @@ COPY --from=stakelovelace/cardano-htn:stage2 /lib64/ld-linux-x86-64* /lib64/
 COPY --from=stakelovelace/cardano-htn:stage2 /usr/lib/x86_64-linux-gnu/libgmp.* /usr/lib/x86_64-linux-gnu/
 COPY --from=stakelovelace/cardano-htn:stage2 /usr/lib/x86_64-linux-gnu/liblz4.* /usr/lib/x86_64-linux-gnu/
 COPY --from=stakelovelace/cardano-htn:stage2 /usr/lib/x86_64-linux-gnu/libsodium.* /usr/lib/x86_64-linux-gnu/
-COPY --from=stakelovelace/cardano-htn:stage2 /opt/cardano /opt/
+COPY --from=stakelovelace/cardano-htn:stage2 /opt/ /opt/
 
 RUN chmod a+x /usr/local/bin/* && ls /opt/ \
     && mkdir -p $CNODE_HOME/priv/files 
