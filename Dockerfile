@@ -2,12 +2,11 @@ FROM debian
 
 ENV \
 CNODE_HOME=/opt/cardano/cnode \
-CNODE_PORT=6000 \
 DEBIAN_FRONTEND=noninteractive \
 LANG=C.UTF-8 \
 ENV=/etc/profile \
 USER=root \
-PATH=$CNODE_HOME/scripts:/root/.cabal/bin:/root/.ghcup/bin:$PATH
+#PATH=$CNODE_HOME/scripts:/root/.cabal/bin:/root/.ghcup/bin:$PATH
 
 WORKDIR /
 
