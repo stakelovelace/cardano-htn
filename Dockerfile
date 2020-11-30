@@ -2,7 +2,6 @@ FROM stakelovelace/cardano-htn:master
 
 ENV \
 CNODE_HOME=/opt/cardano/cnode \
-#CNODE_PORT=6000 \
 DEBIAN_FRONTEND=noninteractive \ 
 LANG=C.UTF-8 \
 USER=root \
