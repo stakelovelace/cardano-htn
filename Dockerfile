@@ -77,7 +77,8 @@ RUN sudo curl -sL https://nixos.org/nix/install | sh \
     && . /home/guild/.nix-profile/etc/profile.d/nix.sh \
     && sudo crontab -u guild /etc/cron.d/crontab \
     && echo "alias cntools=$CNODE_HOME/scripts/cntools.sh" >> ~/.bashrc \
-    && echo "alias gLiveView=$CNODE_HOME/scripts/gLiveView.sh" >> ~/.bashrc
+    && echo "alias gLiveView=$CNODE_HOME/scripts/gLiveView.sh" >> ~/.bashrc \
+    && echo "export PATH=/nix/var/nix/profiles/per-user/guild/profile/bin:/nix/var/nix/profiles/per-user/guild/profile/sbin:/opt/cardano/cnode/scripts:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/home/guild/.cabal/bin"  >> ~/.bashrc
 
 # INSTALL DEPS  
 RUN /nix/var/nix/profiles/per-user/guild/profile/bin/nix-env -i python3 systemd libsodium tmux jq ncurses libtool autoconf git wget gnupg column less openssl vim \
