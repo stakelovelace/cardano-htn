@@ -23,7 +23,8 @@ COPY --from=stakelovelace/cardano-htn:stage2 /usr/lib/x86_64-linux-gnu/liblz4.* 
 COPY --from=stakelovelace/cardano-htn:stage2 /usr/lib/x86_64-linux-gnu/libsodium.* /usr/lib/x86_64-linux-gnu/
 COPY --from=stakelovelace/cardano-htn:stage2 /opt/cardano /opt/
 
-RUN chmod a+x /usr/local/bin/* $CNODE_HOME/scripts/*.sh 
+RUN chmod a+x /usr/local/bin/* 
+#$CNODE_HOME/scripts/*.sh 
 
 # Install locales package
 RUN  apt-get update && apt-get install --no-install-recommends -y locales
