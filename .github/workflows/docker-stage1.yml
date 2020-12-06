@@ -24,6 +24,7 @@ jobs:
     - name: docker push stakelovelace
       run: |
         docker push stakelovelace/cardano-htn:stage1
+        docker logout
     - name: docker push cardanocommunity
       run: |
         docker login -u $DOCKER_USER2 -p $DOCKER_PASSWORD2
