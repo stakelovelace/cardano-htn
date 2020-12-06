@@ -23,4 +23,16 @@ jobs:
       run: |
         docker push stakelovelace/cardano-htn:stage3
         docker tag stakelovelace/cardano-htn:stage3 stakelovelace/cardano-node:latest
+        docker tag stakelovelace/cardano-htn:stage3 cardanocommunity/cardano-node:stage3
+        docker tag stakelovelace/cardano-htn:stage3 cardanocommunity/cardano-node:latest
         docker push stakelovelace/cardano-node:latest
+     - name: docker login
+      env:
+        DOCKER_USER: ${{ secrets.DOCKER_USER2 }}   
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD2 }}  
+      run: |
+        docker login -u $DOCKER_USER2 -p $DOCKER_PASSWORD2
+    - name: docker push
+      run: |
+        docker push cardanocommunity/cardano-node:stage3
+        docker push cardanocommunity/cardano-node:latest
