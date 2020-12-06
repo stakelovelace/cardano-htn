@@ -14,8 +14,6 @@ jobs:
       env:
         DOCKER_USER: ${{ secrets.DOCKER_USER }}   
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-        DOCKER_USER2: ${{ secrets.DOCKER_USER2 }}   
-        DOCKER_PASSWORD2: ${{ secrets.DOCKER_PASSWORD2 }} 
       run: |
         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
     - name: Compiling new node software
@@ -24,9 +22,6 @@ jobs:
     - name: docker push stakelovelace
       run: |
         docker push stakelovelace/cardano-htn:stage1
-    - name: docker push
-      run: |
-        docker push cardanocommunity/cardano-node:stage1
     - name: docker build trigger stage2
       run: |
         curl -XPOST -u "${{ secrets.REPO_SCOPED_USER}}:${{secrets.REPO_SCOPED_TOKEN }}" -H "Accept: application/vnd.github.everest-preview+json" -H "Content-Type: application/json" https://api.github.com/repos/stakelovelace/cardano-htn/actions/workflows/docker-stage2.yml/dispatches --data '{"ref": "master"}'
