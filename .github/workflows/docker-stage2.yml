@@ -26,6 +26,7 @@ jobs:
     - name: docker push
       run: |
         docker push stakelovelace/cardano-htn:stage2
+        docker tag stakelovelace/cardano-htn:stage2 cardanocommunity/cardano-node:stage2
     - name: docker login
       env:
         DOCKER_USER: ${{ secrets.DOCKER_USER2 }}   
