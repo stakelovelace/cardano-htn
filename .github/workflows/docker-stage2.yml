@@ -26,7 +26,6 @@ jobs:
     - name: docker push
       run: |
         docker push stakelovelace/cardano-htn:stage2
-        docker tag stakelovelace/cardano-htn:stage2
     - name: docker push
       run: |
         curl -XPOST -u "${{ secrets.REPO_SCOPED_USER}}:${{secrets.REPO_SCOPED_TOKEN }}" -H "Accept: application/vnd.github.everest-preview+json" -H "Content-Type: application/json" https://api.github.com/repos/stakelovelace/cardano-htn/actions/workflows/docker-stage3.yml/dispatches --data '{"ref": "master"}'
