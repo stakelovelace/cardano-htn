@@ -98,13 +98,10 @@ ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/master-t
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/ip2loc.sh /home/guild/.scripts/
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/guild-topology.sh /home/guild/.scripts/
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/block_watcher.sh /home/guild/.scripts/
-ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/entrypoint.sh ./
+ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/entrypoint_leg.sh ./entrypoint.sh
 
 RUN sudo chown -R guild:guild $CNODE_HOME/* \
     && sudo chown -R guild:guild /home/guild/.* \
     && sudo chmod a+x /home/guild/.scripts/*.sh /home/guild/entrypoint.sh
-
-#RUN sudo apt-get -y purge && sudo apt-get -y clean && sudo apt-get -y autoremove && sudo rm -rf /var/lib/apt/lists/* # && sudo rm -rf /usr/bin/apt* &&  
-#sudo apt-get -y remove exim4 && sudo rm -rf /etc/rc5.d/S*exim4 /etc/rc6.d/K*exim4 /usr/sbin/exim* && 
 
 ENTRYPOINT ["./entrypoint.sh"] 
