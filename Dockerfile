@@ -89,16 +89,39 @@ RUN /nix/var/nix/profiles/per-user/guild/profile/bin/nix-env -i python3 systemd 
     && /nix/var/nix/profiles/per-user/guild/profile/bin/nix-collect-garbage -d \
     && sudo rm /nix/var/nix/profiles/per-user/guild/profile/bin/nix-*
     
-# ENTRY SCRIPT
+# Networks configuration https://hydra.iohk.io/build/5102327/download/1/index.html
+# Mainnet
 ADD https://hydra.iohk.io/build/3670619/download/1/mainnet-shelley-genesis.json $CNODE_HOME/priv/files/
 ADD https://hydra.iohk.io/build/3670619/download/1/mainnet-byron-genesis.json $CNODE_HOME/priv/files/
 ADD https://hydra.iohk.io/build/3670619/download/1/mainnet-config.json $CNODE_HOME/priv/files/
 ADD https://hydra.iohk.io/build/3670619/download/1/mainnet-topology.json $CNODE_HOME/priv/files/
+ADD https://hydra.iohk.io/build/5102327/download/1/mainnet-db-sync-config.json $CNODE_HOME/priv/files/
+# Testnet
+ADD https://hydra.iohk.io/build/5102327/download/1/testnet-config.json $CNODE_HOME/priv/files/
+ADD https://hydra.iohk.io/build/5102327/download/1/testnet-byron-genesis.json $CNODE_HOME/priv/files/
+ADD https://hydra.iohk.io/build/5102327/download/1/testnet-shelley-genesis.json $CNODE_HOME/priv/files/
+ADD https://hydra.iohk.io/build/5102327/download/1/testnet-topology.json $CNODE_HOME/priv/files/
+ADD https://hydra.iohk.io/build/5102327/download/1/testnet-db-sync-config.json $CNODE_HOME/priv/files/
+# Allegra
+ADD https://hydra.iohk.io/build/5102327/download/1/allegra-byron-genesis.json $CNODE_HOME/priv/files/
+ADD https://hydra.iohk.io/build/5102327/download/1/allegra-config.json $CNODE_HOME/priv/files/
+ADD https://hydra.iohk.io/build/5102327/download/1/allegra-shelley-genesis.json $CNODE_HOME/priv/files/
+ADD https://hydra.iohk.io/build/5102327/download/1/allegra-topology.json $CNODE_HOME/priv/files/
+ADD https://hydra.iohk.io/build/5102327/download/1/allegra-db-sync-config.json $CNODE_HOME/priv/files/
+# Launchpd
+ADD https://hydra.iohk.io/build/5102327/download/1/launchpad-config.json $CNODE_HOME/priv/files/
+ADD https://hydra.iohk.io/build/5102327/download/1/launchpad-byron-genesis.json $CNODE_HOME/priv/files/
+ADD https://hydra.iohk.io/build/5102327/download/1/launchpad-shelley-genesis.json $CNODE_HOME/priv/files/
+ADD https://hydra.iohk.io/build/5102327/download/1/launchpad-topology.json $CNODE_HOME/priv/files/
+ADD https://hydra.iohk.io/build/5102327/download/1/launchpad-db-sync-config.json $CNODE_HOME/priv/files/
+
+# ENTRY Scripts
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/master-topology.sh /home/guild/.scripts/
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/ip2loc.sh /home/guild/.scripts/
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/guild-topology.sh /home/guild/.scripts/
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/block_watcher.sh /home/guild/.scripts/
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/entrypoint_leg.sh ./entrypoint.sh
+
 
 RUN sudo chown -R guild:guild $CNODE_HOME/* \
     && sudo chown -R guild:guild /home/guild/.* \
