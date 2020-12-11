@@ -121,10 +121,10 @@ ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/ip2loc.s
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/guild-topology.sh /home/guild/.scripts/
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/block_watcher.sh /home/guild/.scripts/
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/entrypoint_leg.sh ./entrypoint.sh
-
+ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/entrypoint.sh ./entrypoint2.sh
 
 RUN sudo chown -R guild:guild $CNODE_HOME/* \
     && sudo chown -R guild:guild /home/guild/.* \
-    && sudo chmod a+x /home/guild/.scripts/*.sh /home/guild/entrypoint.sh
+    && sudo chmod a+x /home/guild/.scripts/*.sh /home/guild/entrypoint*
 
 ENTRYPOINT ["./entrypoint.sh"] 
