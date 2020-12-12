@@ -79,8 +79,11 @@ RUN sudo curl -sL https://nixos.org/nix/install | sh \
     && sudo ln -s /nix/var/nix/profiles/per-user/etc/profile.d/nix.sh /etc/profile.d/ \
     && . /home/guild/.nix-profile/etc/profile.d/nix.sh \
     && sudo crontab -u guild /etc/cron.d/crontab \
+    && echo "head -n 10 ~/.banner.txt" >> ~/.bashrc \
+    && echo "grep MENU -A 6 ~/.banner.txt | grep -v MENU" >> ~/.bashrc \
     && echo "alias cntools=$CNODE_HOME/scripts/cntools.sh" >> ~/.bashrc \
     && echo "alias gLiveView=$CNODE_HOME/scripts/gLiveView.sh" >> ~/.bashrc \
+    && echo "alias cncli=$CNODE_HOME/scripts/cncli.sh" >> ~/.bashrc \
     && echo "export PATH=/nix/var/nix/profiles/per-user/guild/profile/bin:/nix/var/nix/profiles/per-user/guild/profile/sbin:/opt/cardano/cnode/scripts:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/home/guild/.cabal/bin"  >> ~/.bashrc
 
 # INSTALL DEPS  
@@ -117,6 +120,7 @@ ADD https://hydra.iohk.io/build/5102327/download/1/launchpad-topology.json $CNOD
 ADD https://hydra.iohk.io/build/5102327/download/1/launchpad-db-sync-config.json $CNODE_HOME/priv/files/
 
 # ENTRY Scripts
+ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/banner.txt /home/guild/.banner.txt
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/master-topology.sh /home/guild/.scripts/
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/ip2loc.sh /home/guild/.scripts/
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/guild-topology.sh /home/guild/.scripts/
