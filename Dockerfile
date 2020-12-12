@@ -120,11 +120,14 @@ ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/master-t
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/ip2loc.sh /home/guild/.scripts/
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/guild-topology.sh /home/guild/.scripts/
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/block_watcher.sh /home/guild/.scripts/
-ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/entrypoint_leg.sh ./entrypoint.sh
-ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/entrypoint.sh ./entrypoint2.sh
+ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/healthcheck.sh /home/guild/.scripts/
+#ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/entrypoint_leg.sh ./entrypoint.sh
+ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/entrypoint.sh ./entrypoint.sh
 
 RUN sudo chown -R guild:guild $CNODE_HOME/* \
     && sudo chown -R guild:guild /home/guild/.* \
     && sudo chmod a+x /home/guild/.scripts/*.sh /home/guild/entrypoint*
+
+HEALTHCHECK --start-period=5m --interval=5m --timeout=100s CMD /home/guild/.scripts/healthcheck.sh
 
 ENTRYPOINT ["./entrypoint.sh"] 
