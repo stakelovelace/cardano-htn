@@ -81,6 +81,7 @@ RUN sudo curl -sL https://nixos.org/nix/install | sh \
     && sudo crontab -u guild /etc/cron.d/crontab \
     && echo "head -n 8 ~/.banner.txt" >> ~/.bashrc \
     && echo "grep MENU -A 6 ~/.banner.txt | grep -v MENU" >> ~/.bashrc \
+    && echo "alias env=/usr/bin/env" >> ~/.bashrc \
     && echo "alias cntools=$CNODE_HOME/scripts/cntools.sh" >> ~/.bashrc \
     && echo "alias gLiveView=$CNODE_HOME/scripts/gLiveView.sh" >> ~/.bashrc \
     && echo "alias cncli=$CNODE_HOME/scripts/cncli.sh" >> ~/.bashrc \
