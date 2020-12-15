@@ -84,7 +84,7 @@ RUN sudo curl -sL https://nixos.org/nix/install | sh \
     && echo "alias env=/usr/bin/env" >> ~/.bashrc \
     && echo "alias cntools=$CNODE_HOME/scripts/cntools.sh" >> ~/.bashrc \
     && echo "alias gLiveView=$CNODE_HOME/scripts/gLiveView.sh" >> ~/.bashrc \
-    && echo "alias cncli=$CNODE_HOME/scripts/cncli.sh" >> ~/.bashrc 
+    && echo "alias cncli=$CNODE_HOME/scripts/cncli.sh" >> ~/.bashrc \
     && echo "export PATH=/nix/var/nix/profiles/per-user/guild/profile/bin:/nix/var/nix/profiles/per-user/guild/profile/sbin:/opt/cardano/cnode/scripts:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/home/guild/.cabal/bin"  >> ~/.bashrc
 
 # INSTALL DEPS  
