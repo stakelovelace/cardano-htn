@@ -101,6 +101,9 @@ ADD https://hydra.iohk.io/build/3670619/download/1/mainnet-byron-genesis.json $C
 ADD https://hydra.iohk.io/build/3670619/download/1/mainnet-config.json $CNODE_HOME/priv/files/
 ADD https://hydra.iohk.io/build/3670619/download/1/mainnet-topology.json $CNODE_HOME/priv/files/
 ADD https://hydra.iohk.io/build/5102327/download/1/mainnet-db-sync-config.json $CNODE_HOME/priv/files/
+ADD https://raw.githubusercontent.com/cardano-community/guild-operators/alpha/files/config-mainnet.json $CNODE_HOME/files/config.json
+ADD https://raw.githubusercontent.com/cardano-community/guild-operators/alpha/files/config-combinator.json $CNODE_HOME/files/
+
 # Testnet
 ADD https://hydra.iohk.io/build/5102327/download/1/testnet-config.json $CNODE_HOME/priv/files/
 ADD https://hydra.iohk.io/build/5102327/download/1/testnet-byron-genesis.json $CNODE_HOME/priv/files/
