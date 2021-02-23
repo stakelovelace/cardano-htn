@@ -40,7 +40,7 @@ RUN sed -i 's/^# *\(en_US.UTF-8\)/\1/' /etc/locale.gen \
     && echo "export LANGUAGE=en_US.UTF-8" >> ~/.bashrc
 
 # PREREQ --no-install-recommends
-RUN apt-get update && apt-get install -y libcap2-bin ncurses-bin iproute2 curl wget apt-utils xz-utils netbase sudo coreutils dnsutils net-tools procps tcptraceroute bc \
+RUN apt-get update && apt-get install -y libcap2-bin ncurses-bin iproute2 curl wget apt-utils xz-utils netbase sudo coreutils dnsutils net-tools procps tcptraceroute bc usbip \
     && apt-get install -y --no-install-recommends cron \
     && sudo apt-get -y purge && sudo apt-get -y clean && sudo apt-get -y autoremove && sudo rm -rf /var/lib/apt/lists/* # && sudo rm -rf /usr/bin/apt*
     
@@ -93,35 +93,6 @@ RUN /nix/var/nix/profiles/per-user/guild/profile/bin/nix-env -i python3 systemd 
     && /nix/var/nix/profiles/per-user/guild/profile/bin/nix-env -u --always \
     && /nix/var/nix/profiles/per-user/guild/profile/bin/nix-collect-garbage -d \
     && sudo rm /nix/var/nix/profiles/per-user/guild/profile/bin/nix-*
-    
-# Networks configuration https://hydra.iohk.io/build/5102327/download/1/index.html
-# Mainnet
-ADD https://hydra.iohk.io/build/3670619/download/1/mainnet-shelley-genesis.json $CNODE_HOME/priv/files/
-ADD https://hydra.iohk.io/build/3670619/download/1/mainnet-byron-genesis.json $CNODE_HOME/priv/files/
-ADD https://hydra.iohk.io/build/3670619/download/1/mainnet-config.json $CNODE_HOME/priv/files/
-ADD https://hydra.iohk.io/build/3670619/download/1/mainnet-topology.json $CNODE_HOME/priv/files/
-ADD https://hydra.iohk.io/build/5102327/download/1/mainnet-db-sync-config.json $CNODE_HOME/priv/files/
-ADD https://raw.githubusercontent.com/cardano-community/guild-operators/alpha/files/config-mainnet.json $CNODE_HOME/files/config.json
-ADD https://raw.githubusercontent.com/cardano-community/guild-operators/alpha/files/config-combinator.json $CNODE_HOME/files/
-
-# Testnet
-ADD https://hydra.iohk.io/build/5102327/download/1/testnet-config.json $CNODE_HOME/priv/files/
-ADD https://hydra.iohk.io/build/5102327/download/1/testnet-byron-genesis.json $CNODE_HOME/priv/files/
-ADD https://hydra.iohk.io/build/5102327/download/1/testnet-shelley-genesis.json $CNODE_HOME/priv/files/
-ADD https://hydra.iohk.io/build/5102327/download/1/testnet-topology.json $CNODE_HOME/priv/files/
-ADD https://hydra.iohk.io/build/5102327/download/1/testnet-db-sync-config.json $CNODE_HOME/priv/files/
-# Allegra
-ADD https://hydra.iohk.io/build/5102327/download/1/allegra-byron-genesis.json $CNODE_HOME/priv/files/
-ADD https://hydra.iohk.io/build/5102327/download/1/allegra-config.json $CNODE_HOME/priv/files/
-ADD https://hydra.iohk.io/build/5102327/download/1/allegra-shelley-genesis.json $CNODE_HOME/priv/files/
-ADD https://hydra.iohk.io/build/5102327/download/1/allegra-topology.json $CNODE_HOME/priv/files/
-ADD https://hydra.iohk.io/build/5102327/download/1/allegra-db-sync-config.json $CNODE_HOME/priv/files/
-# Launchpd
-ADD https://hydra.iohk.io/build/5102327/download/1/launchpad-config.json $CNODE_HOME/priv/files/
-ADD https://hydra.iohk.io/build/5102327/download/1/launchpad-byron-genesis.json $CNODE_HOME/priv/files/
-ADD https://hydra.iohk.io/build/5102327/download/1/launchpad-shelley-genesis.json $CNODE_HOME/priv/files/
-ADD https://hydra.iohk.io/build/5102327/download/1/launchpad-topology.json $CNODE_HOME/priv/files/
-ADD https://hydra.iohk.io/build/5102327/download/1/launchpad-db-sync-config.json $CNODE_HOME/priv/files/
 
 # ENTRY Scripts
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/banner.txt /home/guild/.banner.txt
@@ -130,12 +101,14 @@ ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/ip2loc.s
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/guild-topology.sh /home/guild/.scripts/
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/block_watcher.sh /home/guild/.scripts/
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/healthcheck.sh /home/guild/.scripts/
+ADD https://raw.githubusercontent.com/cardano-community/guild-operators/alpha/scripts/cnode-helper-scripts/prereqs.sh /opt/cardano/cnode/scripts/
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/entrypoint.sh ./entrypoint.sh
 
 RUN sudo chown -R guild:guild $CNODE_HOME/* \
     && sudo chown -R guild:guild /home/guild/.* \
-    && sudo chmod a+x /home/guild/.scripts/*.sh /home/guild/entrypoint* \
-    && find /opt/cardano/cnode -name "*config*.json" -print0 | xargs -0 sed -i 's/127.0.0.1/0.0.0.0/g' 2> /dev/null
+    && sudo chmod a+x /home/guild/.scripts/*.sh /opt/cardano/cnode/scripts/*.sh /home/guild/entrypoint.sh \
+    && find /opt/cardano/cnode -name "*config*.json" -print0 | xargs -0 sed -i 's/127.0.0.1/0.0.0.0/g' 2> /dev/null \
+    && find /opt/cardano/cnode -name "*config*.json" -print0 | xargs -0 sed -i 's/\"TraceMempool\": true/\"TraceMempool\": false/g' 2> /dev/null 
 
 HEALTHCHECK --start-period=5m --interval=5m --timeout=100s CMD /home/guild/.scripts/healthcheck.sh
 
