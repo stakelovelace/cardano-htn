@@ -79,7 +79,7 @@ RUN sudo curl -sL https://nixos.org/nix/install | sh \
     && sudo ln -s /nix/var/nix/profiles/per-user/etc/profile.d/nix.sh /etc/profile.d/ \
     && . /home/guild/.nix-profile/etc/profile.d/nix.sh \
     && sudo crontab -u guild /etc/cron.d/crontab \
-    && echo "head -n 8 ~/.banner.txt" >> ~/.bashrc \
+    && echo "head -n 8 ~/.scripts/banner.txt" >> ~/.bashrc \
     && echo "grep MENU -A 6 ~/.banner.txt | grep -v MENU" >> ~/.bashrc \
     && echo "alias env=/usr/bin/env" >> ~/.bashrc \
     && echo "alias cntools=$CNODE_HOME/scripts/cntools.sh" >> ~/.bashrc \
@@ -95,7 +95,7 @@ RUN /nix/var/nix/profiles/per-user/guild/profile/bin/nix-env -i python3 libsodiu
     && sudo rm /nix/var/nix/profiles/per-user/guild/profile/bin/nix-*
 
 # ENTRY Scripts
-ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/banner.txt /home/guild/.banner.txt
+ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/banner.txt /home/guild/.scripts/banner.txt
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/master-topology.sh /home/guild/.scripts/
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/ip2loc.sh /home/guild/.scripts/
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/guild-topology.sh /home/guild/.scripts/
