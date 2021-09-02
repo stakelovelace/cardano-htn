@@ -26,7 +26,7 @@ COPY --from=stakelovelace/cardano-htn:stage2 /usr/lib/x86_64-linux-gnu/liblz4.* 
 COPY --from=stakelovelace/cardano-htn:stage2 /usr/lib/x86_64-linux-gnu/libsodium.* /usr/lib/x86_64-linux-gnu/
 COPY --from=stakelovelace/cardano-htn:stage2 /opt/ /opt/
 
-RUN chmod a+x /usr/local/bin/* && ls /opt/ \
+RUN chmod a+x /usr/local/bin/* \
     && mkdir -p $CNODE_HOME/priv/files 
     
 # Install locales package
