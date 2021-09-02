@@ -24,7 +24,7 @@ COPY --from=stakelovelace/cardano-htn:stage2 /lib64/ld-linux-x86-64* /lib64/
 COPY --from=stakelovelace/cardano-htn:stage2 /usr/lib/x86_64-linux-gnu/libgmp.* /usr/lib/x86_64-linux-gnu/
 COPY --from=stakelovelace/cardano-htn:stage2 /usr/lib/x86_64-linux-gnu/liblz4.* /usr/lib/x86_64-linux-gnu/
 COPY --from=stakelovelace/cardano-htn:stage2 /usr/lib/x86_64-linux-gnu/libsodium.* /usr/lib/x86_64-linux-gnu/
-COPY --from=stakelovelace/cardano-htn:stage2 /usr/lib/x86_64-linux-gnu/libselinux1* /usr/lib/x86_64-linux-gnu/
+COPY --from=stakelovelace/cardano-htn:stage2 /usr/lib/x86_64-linux-gnu/libselinux* /usr/lib/x86_64-linux-gnu/
 COPY --from=stakelovelace/cardano-htn:stage2 /usr/lib/x86_64-linux-gnu/libc* /usr/lib/x86_64-linux-gnu/
 
 COPY --from=stakelovelace/cardano-htn:stage2 /opt/ /opt/
