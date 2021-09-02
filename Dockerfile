@@ -16,6 +16,10 @@ ENV \
     GIT_SSL_CAINFO=/etc/ssl/certs/ca-certificates.crt \
     NIX_SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt \
     NIX_PATH=/nix/var/nix/profiles/per-user/guild/channels
+
+# Install locales package
+RUN  apt-get update && apt-get install --no-install-recommends -y locales \
+     && apt-get install -y libselinux1 libc6 libsodium-dev
      
 # COPY NODE BINS AND DEPS 
 COPY --from=stakelovelace/cardano-htn:stage2 /root/.cabal/bin/* /usr/local/bin/
@@ -24,17 +28,12 @@ COPY --from=stakelovelace/cardano-htn:stage2 /lib64/ld-linux-x86-64* /lib64/
 COPY --from=stakelovelace/cardano-htn:stage2 /usr/lib/x86_64-linux-gnu/libgmp.* /usr/lib/x86_64-linux-gnu/
 COPY --from=stakelovelace/cardano-htn:stage2 /usr/lib/x86_64-linux-gnu/liblz4.* /usr/lib/x86_64-linux-gnu/
 COPY --from=stakelovelace/cardano-htn:stage2 /usr/lib/x86_64-linux-gnu/libsodium.* /usr/lib/x86_64-linux-gnu/
-COPY --from=stakelovelace/cardano-htn:stage2 /usr/lib/x86_64-linux-gnu/libselinux* /usr/lib/x86_64-linux-gnu/
 COPY --from=stakelovelace/cardano-htn:stage2 /usr/lib/x86_64-linux-gnu/libc* /usr/lib/x86_64-linux-gnu/
 
 COPY --from=stakelovelace/cardano-htn:stage2 /opt/ /opt/
 
 RUN chmod a+x /usr/local/bin/* \
     && mkdir -p $CNODE_HOME/priv/files 
-
-# Install locales package
-RUN  apt-get update && apt-get install --no-install-recommends -y locales \
-     && apt-get install -y libselinux1 libc6 libsodium-dev
      
 #  en_US.UTF-8 for inclusion in generation
 RUN sed -i 's/^# *\(en_US.UTF-8\)/\1/' /etc/locale.gen \
