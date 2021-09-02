@@ -1,4 +1,4 @@
-FROM debian
+FROM debian:debian-slim
 
 LABEL desc="Stakelovelace Cardano Node"
 ARG DEBIAN_FRONTEND=noninteractive
@@ -19,7 +19,6 @@ ENV \
 
 # Install locales package
 RUN  apt-get update && apt-get install --no-install-recommends -y locales \
-     && apt-get install -y libselinux1 libc6 libsodium-dev
      
 # COPY NODE BINS AND DEPS 
 COPY --from=stakelovelace/cardano-htn:stage2 /root/.cabal/bin/* /usr/local/bin/
@@ -43,7 +42,7 @@ RUN sed -i 's/^# *\(en_US.UTF-8\)/\1/' /etc/locale.gen \
     && echo "export LANGUAGE=en_US.UTF-8" >> ~/.bashrc
 
 # PREREQ --no-install-recommends
-RUN apt-get update && apt-get install -y libcap2-bin ncurses-bin iproute2 curl wget apt-utils xz-utils netbase sudo coreutils dnsutils net-tools procps tcptraceroute bc usbip \
+RUN apt-get update && apt-get install -y libcap2-libselinux1 libc6 libsodium-dev bin ncurses-bin iproute2 curl wget apt-utils xz-utils netbase sudo coreutils dnsutils net-tools procps tcptraceroute bc usbip \
     && apt-get install -y --no-install-recommends cron \
     && sudo apt-get -y purge && sudo apt-get -y clean && sudo apt-get -y autoremove && sudo rm -rf /var/lib/apt/lists/* # && sudo rm -rf /usr/bin/apt*
     
