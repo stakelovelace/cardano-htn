@@ -34,7 +34,7 @@ RUN chmod a+x /usr/local/bin/* \
 
 # Install locales package
 RUN  apt-get update && apt-get install --no-install-recommends -y locales \
-     && apt-get install libselinux1 libc6
+     && apt-get install -y libselinux1 libc6 libsodium-dev
      
 #  en_US.UTF-8 for inclusion in generation
 RUN sed -i 's/^# *\(en_US.UTF-8\)/\1/' /etc/locale.gen \
