@@ -1,4 +1,4 @@
-FROM debian:stable-slim
+FROM debian
 
 LABEL desc="Stakelovelace Cardano Node"
 ARG DEBIAN_FRONTEND=noninteractive
