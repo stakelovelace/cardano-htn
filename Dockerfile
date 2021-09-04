@@ -31,7 +31,7 @@ COPY --from=stakelovelace/cardano-htn:stage2 /lib/x86_64-linux-gnu/lib* /lib/x86
 
 #COPY --from=stakelovelace/cardano-htn:stage2 /opt/ /opt/
 
-RUN mkdir -p /usr/local/bin/ && chmod a+x /usr/local/bin/* \
+RUN mkdir -p /usr/local/bin && chmod a+x /usr/local/bin/* \
     && mkdir -p $CNODE_HOME/priv/files 
      
 #  en_US.UTF-8 for inclusion in generation
