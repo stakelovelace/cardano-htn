@@ -18,7 +18,8 @@ ENV \
     NIX_PATH=/nix/var/nix/profiles/per-user/guild/channels
 
 # Install locales package
-RUN  apt-get update && apt-get upgrade && apt-get install --no-install-recommends -y locales 
+RUN  apt-get update && apt-get upgrade \ 
+     && apt-get install --no-install-recommends -y locales 
      
 # COPY NODE BINS AND DEPS 
 COPY --from=stakelovelace/cardano-htn:stage2 /root/.cabal/bin/* /usr/local/bin/
