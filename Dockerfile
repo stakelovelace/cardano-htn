@@ -31,9 +31,9 @@ COPY --from=stakelovelace/cardano-htn:stage2 /lib/x86_64-linux-gnu/lib* /lib/x86
 
 #COPY --from=stakelovelace/cardano-htn:stage2 /opt/ /opt/
 
-RUN chmod a+x /usr/local/bin/* 
-    #&& mkdir -p $CNODE_HOME/priv/files 
-     
+# RUN chmod a+x /usr/local/bin/* && mkdir -p $CNODE_HOME/priv/files 
+RUN mkdir -p $CNODE_HOME/priv/files 
+
 #  en_US.UTF-8 for inclusion in generation
 RUN sed -i 's/^# *\(en_US.UTF-8\)/\1/' /etc/locale.gen \
     && locale-gen \
