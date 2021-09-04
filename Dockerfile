@@ -19,7 +19,7 @@ ENV \
 
 # Install locales package
 RUN  apt-get update && apt-get upgrade \ 
-     && apt-get install --no-install-recommends -y locales 
+     && apt-get install --no-install-recommends -y locales apt-utils
      
 # COPY NODE BINS AND DEPS 
 COPY --from=stakelovelace/cardano-htn:stage2 /root/.cabal/bin/* /usr/local/bin/
@@ -34,11 +34,11 @@ COPY --from=stakelovelace/cardano-htn:stage2 /lib/x86_64-linux-gnu/lib* /lib/x86
 # RUN chmod a+x /usr/local/bin/* && mkdir -p $CNODE_HOME/priv/files 
 
 #  en_US.UTF-8 for inclusion in generation
-RUN sed -i 's/^# *\(en_US.UTF-8\)/\1/' /etc/locale.gen \
-    && locale-gen \
-    && echo "export LC_ALL=en_US.UTF-8" >> ~/.bashrc \
-    && echo "export LANG=en_US.UTF-8" >> ~/.bashrc \
-    && echo "export LANGUAGE=en_US.UTF-8" >> ~/.bashrc
+#RUN sed -i 's/^# *\(en_US.UTF-8\)/\1/' /etc/locale.gen \
+ #   && locale-gen \
+  #  && echo "export LC_ALL=en_US.UTF-8" >> ~/.bashrc \
+   # && echo "export LANG=en_US.UTF-8" >> ~/.bashrc \
+    #&& echo "export LANGUAGE=en_US.UTF-8" >> ~/.bashrc
 
 # PREREQ --no-install-recommends
 RUN apt-get update && apt-get upgrade && apt-get install -y libcap2-libselinux1 libc6 libsodium-dev bin ncurses-bin iproute2 curl wget apt-utils xz-utils netbase sudo coreutils dnsutils net-tools procps tcptraceroute bc usbip \
