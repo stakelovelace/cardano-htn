@@ -25,13 +25,6 @@ RUN  apt-get update \
 COPY --from=stakelovelace/cardano-htn:stage2 /root/.cabal/bin/* /usr/local/bin/
 COPY --from=stakelovelace/cardano-htn:stage2 /opt/ /opt/
 
-#COPY --from=stakelovelace/cardano-htn:stage2 /lib/x86_64-linux-gnu/lib* /lib/x86_64-linux-gnu/
-#COPY --from=stakelovelace/cardano-htn:stage2 /lib64/ld-linux-x86-64* /lib64/
-#COPY --from=stakelovelace/cardano-htn:stage2 /usr/lib/x86_64-linux-gnu/libgmp.* /usr/lib/x86_64-linux-gnu/
-#COPY --from=stakelovelace/cardano-htn:stage2 /usr/lib/x86_64-linux-gnu/liblz4.* /usr/lib/x86_64-linux-gnu/
-#COPY --from=stakelovelace/cardano-htn:stage2 /usr/lib/x86_64-linux-gnu/libsodium.* /usr/lib/x86_64-linux-gnu/
-
-
 RUN chmod a+x /usr/local/bin/* && mkdir -p $CNODE_HOME/priv/files 
 
 #  en_US.UTF-8 for inclusion in generation
@@ -108,7 +101,8 @@ ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/entrypoi
 
 RUN sudo chown -R guild:guild $CNODE_HOME/* \
     && sudo chown -R guild:guild /home/guild/.* \
-    && sudo chmod a+x /home/guild/.scripts/*.sh /opt/cardano/cnode/scripts/*.sh /home/guild/entrypoint.sh 
+    && sudo chmod a+x /home/guild/.scripts/*.sh /opt/cardano/cnode/scripts/*.sh /home/guild/entrypoint.sh \
+    && sudo rm /opt/cardano/cnode/scripts/*_bkp*
 
 HEALTHCHECK --start-period=5m --interval=5m --timeout=100s CMD /home/guild/.scripts/healthcheck.sh
 
