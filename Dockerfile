@@ -35,7 +35,7 @@ RUN sed -i 's/^# *\(en_US.UTF-8\)/\1/' /etc/locale.gen \
     && echo "export LANGUAGE=en_US.UTF-8" >> ~/.bashrc
 
 # PREREQ --no-install-recommends
-RUN apt-get update && apt-get install -y libcap2 libselinux1 libc6 libsodium-dev ncurses-bin iproute2 curl wget apt-utils xz-utils netbase sudo coreutils dnsutils net-tools procps tcptraceroute bc usbip \
+RUN apt-get update && apt-get install -y libcap2 libselinux1 libc6 libsodium-dev ncurses-bin iproute2 curl wget apt-utils xz-utils netbase sudo coreutils dnsutils net-tools procps bc usbip \
     && apt-get install -y --no-install-recommends cron \
     && sudo apt-get -y purge && sudo apt-get -y clean && sudo apt-get -y autoremove && sudo rm -rf /var/lib/apt/lists/* # && sudo rm -rf /usr/bin/apt*
     
@@ -83,7 +83,7 @@ RUN sudo curl -sL https://nixos.org/nix/install | sh \
     && echo "export PATH=/nix/var/nix/profiles/per-user/guild/profile/bin:/nix/var/nix/profiles/per-user/guild/profile/sbin:/opt/cardano/cnode/scripts:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/home/guild/.cabal/bin"  >> ~/.bashrc
 
 # INSTALL DEPS  
-RUN /nix/var/nix/profiles/per-user/guild/profile/bin/nix-env -i python3 libsodium tmux jq ncurses libtool autoconf git wget gnupg systemd util-linux less openssl vim \
+RUN /nix/var/nix/profiles/per-user/guild/profile/bin/nix-env -i python3 libsodium tmux jq ncurses libtool autoconf git wget gnupg systemd util-linux less openssl vim tcptraceroute \
     && /nix/var/nix/profiles/per-user/guild/profile/bin/nix-channel --update \
     && /nix/var/nix/profiles/per-user/guild/profile/bin/nix-env -u --always \
     && /nix/var/nix/profiles/per-user/guild/profile/bin/nix-collect-garbage -d \
