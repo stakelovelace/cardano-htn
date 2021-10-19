@@ -101,9 +101,8 @@ ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/entrypoi
 
 RUN sudo chown -R guild:guild $CNODE_HOME/* \
     && sudo chown -R guild:guild /home/guild/.* \
-    && sudo chmod a+x /home/guild/.scripts/*.sh /opt/cardano/cnode/scripts/*.sh /home/guild/entrypoint.sh \
-    && sudo rm /opt/cardano/cnode/scripts/*_bkp*
-
+    && sudo chmod a+x /home/guild/.scripts/*.sh /opt/cardano/cnode/scripts/*.sh /home/guild/entrypoint.sh 
+    
 HEALTHCHECK --start-period=5m --interval=5m --timeout=100s CMD /home/guild/.scripts/healthcheck.sh
 
 ENTRYPOINT ["./entrypoint.sh"] 
