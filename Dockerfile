@@ -14,6 +14,7 @@ RUN git clone https://github.com/input-output-hk/cardano-node.git \
   && cd cardano-node \
   && echo "package cardano-crypto-praos" > cabal.project.local \
   && echo "   flags: -external-libsodium-vrf" >> cabal.project.local \
+  && echo "tags/$CNVERSION" \
   && git fetch --tags --all && git checkout tags/$CNVERSION \
   && bash $CNODE_HOME/scripts/cabal-build-all.sh -l \
   && for i in $(ls /root/.cabal/bin); do ldd /root/.cabal/bin/$i | cut -d ">" -f 2 | cut -d "(" -f 1| sed 's/[[:blank:]]//g' > /tmp/liblisttmp ; done \
