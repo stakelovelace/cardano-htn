@@ -16,5 +16,5 @@ RUN set -x && apt update \
   && export SUDO='N' \
   && export UPDATE_CHECK='N' \
   && export BOOTSTRAP_HASKELL_NO_UPGRADE=1 \
-  && chmod +x /tmp/prereqs.sh &&  /tmp/prereqs.sh -w \
+  && chmod +x /tmp/prereqs.sh &&  /tmp/prereqs.sh -w -c \
   && apt-get -y purge && apt-get -y clean && apt-get -y autoremove  && rm -rf /var/lib/apt/lists/*
