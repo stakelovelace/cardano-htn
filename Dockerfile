@@ -23,6 +23,7 @@ RUN  apt-get update \
      
 # COPY NODE BINS AND DEPS 
 COPY --from=stakelovelace/cardano-htn:stage2 /root/.cabal/bin/* /usr/local/bin/
+COPY --from=stakelovelace/cardano-htn:stage2 /root/.cargo/bin/* /usr/local/bin/
 COPY --from=stakelovelace/cardano-htn:stage2 /opt/ /opt/
 
 RUN chmod a+x /usr/local/bin/* && mkdir -p $CNODE_HOME/priv/files 
