@@ -37,7 +37,7 @@ RUN sed -i 's/^# *\(en_US.UTF-8\)/\1/' /etc/locale.gen \
     && echo "export LANGUAGE=en_US.UTF-8" >> ~/.bashrc
 
 # PREREQ --no-install-recommends
-RUN apt-get update && apt-get install -y libcap2 libselinux1 libc6 libsodium-dev ncurses-bin iproute2 curl wget apt-utils xz-utils dialog netbase sudo coreutils dnsutils net-tools procps bc usbip \
+RUN apt-get update && apt-get install -y libcap2 libselinux1 libc6 libsodium-dev ncurses-bin iproute2 curl wget apt-utils xz-utils netbase sudo coreutils dnsutils net-tools procps tcptraceroute bc usbip sqlite3 python3 tmux jq ncurses-base libtool autoconf git wget gnupg tcptraceroute util-linux less openssl \
     && apt-get install -y --no-install-recommends cron \
     && sudo apt-get -y purge && sudo apt-get -y clean && sudo apt-get -y autoremove && sudo rm -rf /var/lib/apt/lists/* # && sudo rm -rf /usr/bin/apt*
     
@@ -72,24 +72,13 @@ USER guild
 WORKDIR /home/guild
 
 # INSTALL NIX
-RUN sudo curl -sL https://nixos.org/nix/install | sh \
-    && sudo ln -s /nix/var/nix/profiles/per-user/etc/profile.d/nix.sh /etc/profile.d/ \
-    && . /home/guild/.nix-profile/etc/profile.d/nix.sh \
-    && sudo crontab -u guild /etc/cron.d/crontab \
-    && echo "head -n 8 ~/.scripts/banner.txt" >> ~/.bashrc \
+RUN echo "head -n 8 ~/.scripts/banner.txt" >> ~/.bashrc \
     && echo "grep MENU -A 6 ~/.scripts/banner.txt | grep -v MENU" >> ~/.bashrc \
     && echo "alias env=/usr/bin/env" >> ~/.bashrc \
     && echo "alias cntools=$CNODE_HOME/scripts/cntools.sh" >> ~/.bashrc \
     && echo "alias gLiveView=$CNODE_HOME/scripts/gLiveView.sh" >> ~/.bashrc \
     && echo "alias cncli=$CNODE_HOME/scripts/cncli.sh" >> ~/.bashrc \
-    && echo "export PATH=/nix/var/nix/profiles/per-user/guild/profile/bin:/nix/var/nix/profiles/per-user/guild/profile/sbin:/opt/cardano/cnode/scripts:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/home/guild/.cabal/bin"  >> ~/.bashrc
-
-# INSTALL DEPS  
-RUN /nix/var/nix/profiles/per-user/guild/profile/bin/nix-env -i python3 libsodium tmux jq ncurses libtool autoconf git wget gnupg systemd util-linux less openssl vim tcptraceroute \
-    && /nix/var/nix/profiles/per-user/guild/profile/bin/nix-channel --update \
-    && /nix/var/nix/profiles/per-user/guild/profile/bin/nix-env -u --always \
-    && /nix/var/nix/profiles/per-user/guild/profile/bin/nix-collect-garbage -d \
-    && sudo rm /nix/var/nix/profiles/per-user/guild/profile/bin/nix-*
+    && echo "export PATH=/opt/cardano/cnode/scripts:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/home/guild/.cabal/bin"  >> ~/.bashrc
 
 # ENTRY Scripts
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/banner.txt /home/guild/.scripts/banner.txt
