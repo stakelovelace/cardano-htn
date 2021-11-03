@@ -1,4 +1,4 @@
-FROM stakelovelace/cardano-htn:master
+FROM stakelovelace/cardano-htn:stage1
 
 ENV \
 CNODE_HOME=/opt/cardano/cnode \
