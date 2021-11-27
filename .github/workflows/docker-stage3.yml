@@ -19,4 +19,4 @@ jobs:
     - name: docker push
       run: |
         docker push stakelovelace/cardano-htn:stage3
-        docker push stakelovelace/cardano-node
+        docker push stakelovelace/cardano-node:latest
