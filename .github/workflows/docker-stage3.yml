@@ -16,7 +16,9 @@ jobs:
     - name: Compiling new node software
       run: |      
         DOCKER_BUILDKIT=1 docker build . --file Dockerstage3 --compress --tag stakelovelace/cardano-htn:stage3
-    - name: docker push
+    - name: docker push Cardano HTN
       run: |
         docker push stakelovelace/cardano-htn:stage3
+    - name: docker push Cardano Node
+      run: |
         docker push stakelovelace/cardano-node:latest
