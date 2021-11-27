@@ -15,7 +15,7 @@ jobs:
         docker login -u ${{ secrets.DOCKER_USER }}  -p ${{ secrets.DOCKER_PASSWORD }}
     - name: Compiling new node software
       run: |      
-        docker build . --compress --tag stakelovelace/cardano-htn:stage1
+        DOCKER_BUILDKIT=1 docker build . --compress --tag stakelovelace/cardano-htn:stage1
     - name: docker push stakelovelace
       run: |
         docker push stakelovelace/cardano-htn:stage1
