@@ -4,6 +4,7 @@ on:
   issues:
     types:
       - 'opened'
+  workflow_dispatch:
 
 jobs:
   build:
@@ -11,7 +12,7 @@ jobs:
     steps:
       -
         name: Set sponsor label
-        uses: JasonEtco/is-sponsor-label-action@024ac24f8b170abce078cad4ee748852369853c8
+        uses: JasonEtco/is-sponsor-label-action@v1
         with:
           label: ":sparkling_heart: sponsor"
         env:
