@@ -1,3 +1,7 @@
+ARG SYSTEMD="false"
+ARG DEBIAN_FRONTEND=noninteractive
+ARG DOCKER_BUILDTAGS="apparmor seccomp"
+
 FROM debian
 
 ENV \
