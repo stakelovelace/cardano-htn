@@ -1,4 +1,4 @@
-name: Docker Image CD Stage 1
+name: Docker P2P
 
 on:
   workflow_dispatch:
