@@ -1,0 +1,78 @@
+FROM debian:stable-slim
+
+LABEL desc="Stakelovelace Cardano Node"
+ARG DEBIAN_FRONTEND=noninteractive
+
+USER root
+WORKDIR /
+
+ENV \
+    ENV=/etc/profile \
+    LC_ALL=en_US.UTF-8 \
+    LANG=en_US.UTF-8 \
+    LANGUAGE=en_US.UTF-8 \
+    CNODE_HOME=/opt/cardano/cnode \
+    PATH=/nix/var/nix/profiles/per-user/guild/profile/bin:/nix/var/nix/profiles/per-user/guild/profile/sbin:/opt/cardano/cnode/scripts:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/home/guild/.cabal/bin \
+    GIT_SSL_CAINFO=/etc/ssl/certs/ca-certificates.crt \
+    NIX_SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt \
+    NIX_PATH=/nix/var/nix/profiles/per-user/guild/channels
+
+# Install locales package
+RUN  apt-get update \ 
+     && apt-get install --no-install-recommends -y locales apt-utils
+     
+# COPY NODE BINS AND DEPS 
+COPY --from=stakelovelace/cardano-node:p2p-stage2 /root/.cabal/bin/* /usr/local/bin/
+COPY --from=stakelovelace/cardano-node:p2p-stage2 /root/bin/* /usr/local/bin/
+COPY --from=stakelovelace/cardano-node:p2p-stage2 /root/git/* /usr/local/bin/
+COPY --from=stakelovelace/cardano-node:p2p-stage2 /opt/ /opt/
+
+RUN chmod a+x /usr/local/bin/* && mkdir -p $CNODE_HOME/priv/files 
+
+#  en_US.UTF-8 for inclusion in generation
+RUN sed -i 's/^# *\(en_US.UTF-8\)/\1/' /etc/locale.gen \
+    && locale-gen \
+    && echo "export LC_ALL=en_US.UTF-8" >> ~/.bashrc \
+    && echo "export LANG=en_US.UTF-8" >> ~/.bashrc \
+    && echo "export LANGUAGE=en_US.UTF-8" >> ~/.bashrc
+
+# PREREQ --no-install-recommends
+RUN apt-get update && apt-get install -y libcap2 libselinux1 libc6 libsodium-dev ncurses-bin iproute2 curl wget apt-utils xz-utils netbase sudo coreutils dnsutils net-tools procps tcptraceroute bc usbip sqlite3 python3 tmux jq ncurses-base libtool autoconf git wget gnupg tcptraceroute util-linux less openssl \
+    && apt-get install -y --no-install-recommends cron \
+    && sudo apt-get -y purge && sudo apt-get -y clean && sudo apt-get -y autoremove && sudo rm -rf /var/lib/apt/lists/* # && sudo rm -rf /usr/bin/apt*
+    
+# SETUP Guild USER 
+RUN adduser --disabled-password --gecos '' guild \
+&& echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers \
+&& adduser guild sudo \ 
+&& chown -R guild:guild /home/guild/.*
+
+USER guild
+WORKDIR /home/guild
+
+# INSTALL NIX
+RUN echo "head -n 8 ~/.scripts/banner.txt" >> ~/.bashrc \
+    && echo "grep MENU -A 6 ~/.scripts/banner.txt | grep -v MENU" >> ~/.bashrc \
+    && echo "alias env=/usr/bin/env" >> ~/.bashrc \
+    && echo "alias cntools=$CNODE_HOME/scripts/cntools.sh" >> ~/.bashrc \
+    && echo "alias gLiveView=$CNODE_HOME/scripts/gLiveView.sh" >> ~/.bashrc \
+    && echo "alias cnclis=$CNODE_HOME/scripts/cncli.sh" >> ~/.bashrc \
+    && echo "export PATH=/opt/cardano/cnode/scripts:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/home/guild/.cabal/bin"  >> ~/.bashrc
+
+# ENTRY Scripts
+ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/banner.txt /home/guild/.scripts/banner.txt
+ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/master-topology.sh /home/guild/.scripts/
+ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/ip2loc.sh /home/guild/.scripts/
+ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/guild-topology.sh /home/guild/.scripts/
+ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/block_watcher.sh /home/guild/.scripts/
+ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/healthcheck.sh /home/guild/.scripts/
+ADD https://raw.githubusercontent.com/cardano-community/guild-operators/alpha/scripts/cnode-helper-scripts/prereqs.sh /opt/cardano/cnode/scripts/
+ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/entrypoint.sh ./entrypoint.sh
+
+RUN sudo chown -R guild:guild $CNODE_HOME/* \
+    && sudo chown -R guild:guild /home/guild/.* \
+    && sudo chmod a+x /home/guild/.scripts/*.sh /opt/cardano/cnode/scripts/*.sh /home/guild/entrypoint.sh 
+    
+HEALTHCHECK --start-period=5m --interval=5m --timeout=100s CMD /home/guild/.scripts/healthcheck.sh
+
+ENTRYPOINT ["./entrypoint.sh"] 
