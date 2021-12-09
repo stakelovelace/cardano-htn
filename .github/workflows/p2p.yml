@@ -1,0 +1,27 @@
+name: Docker Image CD Stage 1
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'release-versions/guild-prereq-latest.txt'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: docker login
+      run: |
+        docker login -u ${{ secrets.DOCKER_USER }}  -p ${{ secrets.DOCKER_PASSWORD }}
+    - name: Compiling new node software
+      run: |      
+        DOCKER_BUILDKIT=1 docker build --compress -t stakelovelace/cardano-node:p2p-stage2 - < P2p-dockerfile-1
+    - name: docker push stakelovelace
+      run: |
+        docker push stakelovelace/cardano-node:p2p-stage2
+    - name: Compiling new node software
+      run: |      
+        DOCKER_BUILDKIT=1 docker build --compress -t stakelovelace/cardano-node:p2p - < P2p-dockerfile-2
+    - name: docker push stakelovelace
+      run: |
+        docker push stakelovelace/cardano-node:p2p
