@@ -24,7 +24,7 @@ RUN  apt-get update \
 # COPY NODE BINS AND DEPS 
 COPY --from=stakelovelace/cardano-htn:stage2 /root/.cabal/bin/* /usr/local/bin/
 COPY --from=stakelovelace/cardano-htn:stage2 /root/bin/* /usr/local/bin/
-COPY --from=stakelovelace/cardano-htn:stage2 /root/git/* /usr/local/bin/
+COPY --from=stakelovelace/cardano-htn:stage2 /root/git/cncli/target/release/cncli /usr/local/bin/
 COPY --from=stakelovelace/cardano-htn:stage2 /opt/ /opt/
 
 RUN chmod a+x /usr/local/bin/* && mkdir -p $CNODE_HOME/priv/files 
@@ -37,7 +37,7 @@ RUN sed -i 's/^# *\(en_US.UTF-8\)/\1/' /etc/locale.gen \
     && echo "export LANGUAGE=en_US.UTF-8" >> ~/.bashrc
 
 # PREREQ --no-install-recommends
-RUN apt-get update && apt-get install -y libcap2 libselinux1 libc6 libsodium-dev ncurses-bin iproute2 curl wget apt-utils xz-utils netbase sudo coreutils dnsutils net-tools procps tcptraceroute bc usbip sqlite3 python3 tmux jq ncurses-base libtool autoconf git wget gnupg tcptraceroute util-linux less openssl bsdmainutils \
+RUN apt-get update && apt-get install -y libcap2 libselinux1 libc6 libsodium-dev ncurses-bin iproute2 curl wget apt-utils xz-utils netbase sudo coreutils dnsutils net-tools procps tcptraceroute bc usbip sqlite3 python3 tmux jq ncurses-base libtool autoconf git gnupg tcptraceroute util-linux less openssl bsdmainutils \
     && apt-get install -y --no-install-recommends cron \
     && sudo apt-get -y purge && sudo apt-get -y clean && sudo apt-get -y autoremove && sudo rm -rf /var/lib/apt/lists/* # && sudo rm -rf /usr/bin/apt*
     
