@@ -12,10 +12,8 @@ ENV \
     LANG=en_US.UTF-8 \
     LANGUAGE=en_US.UTF-8 \
     CNODE_HOME=/opt/cardano/cnode \
-    PATH=/nix/var/nix/profiles/per-user/guild/profile/bin:/nix/var/nix/profiles/per-user/guild/profile/sbin:/opt/cardano/cnode/scripts:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/home/guild/.cabal/bin \
-    GIT_SSL_CAINFO=/etc/ssl/certs/ca-certificates.crt \
-    NIX_SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt \
-    NIX_PATH=/nix/var/nix/profiles/per-user/guild/channels
+    PATH=/opt/cardano/cnode/scripts:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/home/guild/.cabal/bin \
+    CARDANO_NODE_SOCKET_PATH=$CNODE_HOME/sockets/node0.socket
 
 # Install locales package
 RUN  apt-get update \ 
@@ -37,7 +35,7 @@ RUN sed -i 's/^# *\(en_US.UTF-8\)/\1/' /etc/locale.gen \
     && echo "export LANGUAGE=en_US.UTF-8" >> ~/.bashrc
 
 # PREREQ --no-install-recommends
-RUN apt-get update && apt-get install -y libcap2 libselinux1 libc6 libsodium-dev ncurses-bin iproute2 curl wget apt-utils xz-utils netbase sudo coreutils dnsutils net-tools procps tcptraceroute bc usbip sqlite3 python3 tmux jq ncurses-base libtool autoconf git gnupg tcptraceroute util-linux less openssl bsdmainutils dialog \
+RUN apt-get update && apt-get install -y libcap2 libselinux1 libc6 libsodium-dev ncurses-bin iproute2 curl wget apt-utils xz-utils netbase sudo vim coreutils dnsutils net-tools procps tcptraceroute bc usbip sqlite3 python3 tmux jq ncurses-base libtool autoconf git gnupg tcptraceroute util-linux less openssl bsdmainutils dialog \
     && apt-get install -y --no-install-recommends cron \
     && sudo apt-get -y purge && sudo apt-get -y clean && sudo apt-get -y autoremove && sudo rm -rf /var/lib/apt/lists/* # && sudo rm -rf /usr/bin/apt*
     
@@ -47,10 +45,10 @@ ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/crontab 
 RUN chmod a+x /etc/init.d/promtail && chmod 0644 /etc/cron.d/crontab && touch /var/log/cron.log 
 
 # from https://github.com/grafana/loki/releases
-RUN cd /usr/local/bin \
-&& curl -fSL -o promtail.gz "https://github.com/grafana/loki/releases/download/v1.5.0/promtail-linux-amd64.zip" \
-&& gunzip promtail.gz \
-&& chmod a+x promtail && ls /opt/
+#RUN cd /usr/local/bin \
+#&& curl -fSL -o promtail.gz "https://github.com/grafana/loki/releases/download/v1.5.0/promtail-linux-amd64.zip" \
+#&& gunzip promtail.gz \
+#&& chmod a+x promtail && ls /opt/
 
 RUN wget https://github.com/javadmohebbi/IP2Location/raw/master/dist/linux/amd64/ip2location \
 && mv ip2location /usr/local/bin/ -v \
