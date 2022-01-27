@@ -80,6 +80,7 @@ RUN echo "head -n 8 ~/.scripts/banner.txt" >> ~/.bashrc \
     && echo "export PATH=/opt/cardano/cnode/scripts:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/home/guild/.cabal/bin" >> ~/.bashrc
 
 # ENTRY Scripts
+ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/nodekill.sh /home/guild/.scripts/
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/fastfinder.sh /home/guild/.scripts/
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/banner.txt /home/guild/.scripts/banner.txt
 ADD https://raw.githubusercontent.com/stakelovelace/cardano-node/master/master-topology.sh /home/guild/.scripts/
