@@ -21,6 +21,6 @@ jobs:
         docker push stakelovelace/cardano-htn:stage3
     - name: docker push Cardano Node
       run: |
-        VERSION=`cat release-versions/guild-prereq-latest.txt`
+        CNVERSION=`cat release-versions/cardano-node-latest.txt`
         docker push stakelovelace/cardano-node:latest
-        docker push stakelovelace/cardano-node:$VERSION
+        docker push stakelovelace/cardano-node:$CNVERSION
