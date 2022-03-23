@@ -15,13 +15,14 @@ jobs:
         curl -sLo Dockerstage3 https://raw.githubusercontent.com/stakelovelace/cardano-htn/stage3/Dockerfile
     - name: Compiling new node software
       run: |
-        CNVERSION=`cat release-versions/cardano-node-latest.txt`
-        DOCKER_BUILDKIT=1 docker build . --file Dockerstage3 --compress --tag stakelovelace/cardano-htn:stage3 --tag stakelovelace/cardano-node:latest --tag stakelovelace/cardano-node:$CNVERSION
+        DOCKER_BUILDKIT=1 docker build . --file Dockerstage3 --compress --tag stakelovelace/cardano-htn:stage3
     - name: docker push Cardano HTN
       run: |
         docker push stakelovelace/cardano-htn:stage3
     - name: docker push Cardano Node
       run: |
         CNVERSION=`cat release-versions/cardano-node-latest.txt`
+        docker tag  stakelovelace/cardano-htn:stage3 stakelovelace/cardano-node:latest 
+        docker tag  stakelovelace/cardano-htn:stage3 stakelovelace/cardano-node:$CNVERSION
         docker push stakelovelace/cardano-node:latest
         docker push stakelovelace/cardano-node:$CNVERSION
