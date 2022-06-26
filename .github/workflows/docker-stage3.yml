@@ -13,6 +13,18 @@ jobs:
     - name: dockerfile Stage2 Download
       run: |
         curl -sLo Dockerstage3 https://raw.githubusercontent.com/stakelovelace/cardano-htn/stage3/Dockerfile
+    - name: Compiling new node software suite
+      run: |      
+        # Workaround to provide additional free space for builds.
+        #   https://github.com/actions/virtual-environments/issues/2840
+        sudo apt-get remove -y '^dotnet-.*'
+        sudo apt-get remove -y 'php.*'
+        sudo apt-get remove -y azure-cli google-cloud-sdk hhvm google-chrome-stable firefox powershell mono-devel
+        sudo apt-get autoremove -y
+        sudo apt-get clean
+        sudo rm -rf /usr/share/dotnet
+        sudo rm -rf "/usr/local/share/boost"
+        sudo rm -rf "$AGENT_TOOLSDIRECTORY"
     - name: Compiling new node software
       run: |
         DOCKER_BUILDKIT=1 docker build . --file Dockerstage3 --compress --tag stakelovelace/cardano-htn:stage3
