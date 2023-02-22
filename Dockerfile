@@ -17,5 +17,14 @@ RUN git clone https://github.com/input-output-hk/cardano-node.git \
   && bash $CNODE_HOME/scripts/cabal-build-all.sh -l \
   && for i in $(ls /root/.cabal/bin); do ldd /root/.cabal/bin/$i | cut -d ">" -f 2 | cut -d "(" -f 1| sed 's/[[:blank:]]//g' > /tmp/liblisttmp ; done \
   && cat  /tmp/liblisttmp | sort | uniq > /tmp/liblist \
+  && apt-get update -y && sudo apt-get install -y cargo automake build-essential pkg-config libffi-dev libgmp-dev libssl-dev libtinfo-dev libsystemd-dev zlib1g-dev make g++ tmux git jq wget libncursesw5 libtool autoconf \
+  && git clone --recurse-submodules https://github.com/cardano-community/cncli \
+  && cd cncli \
+  && tag=`curl https://github.com/cardano-community/cncli/tags | grep "cncli/releases" | grep -v ">Releases<" | head -n 1 | cut -d ">" -f 3 | cut -d "<" -f 1` \
+  && git checkout $tag \
+  && curl https://sh.rustup.rs -sSf | sh -s -- -y \
+  && ~/.cargo/bin/cargo install --path . --force \
+  && ~/cncli/target/release/cncli --version \
+  && mv ~/cncli/target/release/cncli /root/.local/bin/ \
   && apt-get -y remove libpq-dev build-essential pkg-config libffi-dev libgmp-dev libssl-dev libtinfo-dev libsystemd-dev zlib1g-dev make g++ && apt-get -y purge && apt-get -y clean && apt-get -y autoremove \
   && cardano-node --version;
