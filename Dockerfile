@@ -11,6 +11,7 @@ RUN git clone https://github.com/input-output-hk/cardano-node.git \
   && export BOOTSTRAP_HASKELL_NO_UPGRADE=1 \
   && wget https://raw.githubusercontent.com/stakelovelace/cardano-htn/master/release-versions/cardano-node-latest.txt \
   && CNVERSION=$(cat cardano-node-latest.txt)  \
+  && mkdir -p /root/.local/bin \
   && cd cardano-node \
   && echo "tags/$CNVERSION" \
   && git fetch --tags --all && git checkout tags/$CNVERSION \
