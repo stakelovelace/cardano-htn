@@ -18,7 +18,7 @@ RUN git clone https://github.com/input-output-hk/cardano-node.git \
   && bash $CNODE_HOME/scripts/cabal-build-all.sh \
   && for i in $(ls /root/.cabal/bin); do ldd /root/.cabal/bin/$i | cut -d ">" -f 2 | cut -d "(" -f 1| sed 's/[[:blank:]]//g' > /tmp/liblisttmp ; done \
   && cat  /tmp/liblisttmp | sort | uniq > /tmp/liblist \
-  && apt-get update -y && sudo apt-get install -y cargo automake build-essential pkg-config libffi-dev libgmp-dev libssl-dev libtinfo-dev libsystemd-dev zlib1g-dev make g++ tmux git jq wget libncursesw5 libtool autoconf \
+  && apt-get update -y && apt-get install -y automake build-essential pkg-config libffi-dev libgmp-dev libssl-dev libtinfo-dev libsystemd-dev zlib1g-dev make g++ tmux git jq wget libncursesw5 libtool autoconf \
   && git clone --recurse-submodules https://github.com/cardano-community/cncli \
   && cd cncli \
   && tag=`curl https://github.com/cardano-community/cncli/tags | grep "cncli/releases" | grep -v ">Releases<" | head -n 1 | cut -d ">" -f 3 | cut -d "<" -f 1` \
