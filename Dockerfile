@@ -26,7 +26,6 @@ RUN git clone https://github.com/input-output-hk/cardano-node.git \
   && curl https://sh.rustup.rs -sSf | sh -s -- -y \
   && ~/.cargo/bin/cargo install --path . --force \
   && newCLI=`find ~/ -type f -executable -name cncli` \
-  && $newCLI --version \
   && mv $newCLI /root/.local/bin/ \
   && apt-get -y remove libpq-dev build-essential pkg-config libffi-dev libgmp-dev libssl-dev libtinfo-dev libsystemd-dev zlib1g-dev make g++ && apt-get -y purge && apt-get -y clean && apt-get -y autoremove \
   && cardano-node --version;
