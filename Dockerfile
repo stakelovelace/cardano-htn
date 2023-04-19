@@ -39,8 +39,10 @@ RUN set -x && apt update \
     && chmod 755 tcpping \
     && adduser --disabled-password --gecos '' guild \
     && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers \
-    && adduser guild sudo 
-
+    && adduser guild sudo \
+    && curl -LO $(curl -s https://api.github.com/repos/CardanoSolutions/kupo/releases/latest | grep "browser_download_url.*kupo.*amd64-Linux.tar.gz" | cut -d : -f 2,3 | tr -d \") \
+    && tar -xzf kupo*.tar.gz
+    
 USER guild
 WORKDIR /home/guild
 
