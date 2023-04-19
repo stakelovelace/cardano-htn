@@ -16,7 +16,9 @@ jobs:
     - name: Compiling new node software
       run: |      
         DOCKER_BUILDKIT=1 docker build --compress -t stakelovelace/cardano-node:latest - < Dockerfile
-    - name: docker push stakelovelace
+    - name: docker push Cardano Node
       run: |
+        CNVERSION=`cat release-versions/cardano-node-latest.txt`
+        docker tag  stakelovelace/cardano-node:latest stakelovelace/cardano-node:$CNVERSION
         docker push stakelovelace/cardano-node:latest
-
+        docker push stakelovelace/cardano-node:$CNVERSION
