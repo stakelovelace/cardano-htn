@@ -15,13 +15,8 @@ jobs:
         docker login -u ${{ secrets.DOCKER_USER }}  -p ${{ secrets.DOCKER_PASSWORD }}
     - name: Compiling new node software
       run: |      
-        DOCKER_BUILDKIT=1 docker build --compress -t stakelovelace/cardano-node:p2p-stage2 - < P2p-dockerfile-1
+        DOCKER_BUILDKIT=1 docker build --compress -t stakelovelace/cardano-node:latest - < Dockerfile
     - name: docker push stakelovelace
       run: |
-        docker push stakelovelace/cardano-node:p2p-stage2
-    - name: Compiling new node software
-      run: |      
-        DOCKER_BUILDKIT=1 docker build --compress -t stakelovelace/cardano-node:p2p - < P2p-dockerfile-2
-    - name: docker push stakelovelace
-      run: |
-        docker push stakelovelace/cardano-node:p2p
+        docker push stakelovelace/cardano-node:latest
+
