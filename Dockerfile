@@ -41,7 +41,9 @@ RUN set -x && apt update \
     && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers \
     && adduser guild sudo \
     && curl -LO $(curl -s https://api.github.com/repos/CardanoSolutions/kupo/releases/latest | grep "browser_download_url.*kupo.*amd64-Linux.tar.gz" | cut -d : -f 2,3 | tr -d \") \
-    && tar -xzf kupo*.tar.gz
+    && tar -xzf kupo*.tar.gz \
+    && mv bin/kupo . \
+    && rm -rf bin
     
 USER guild
 WORKDIR /home/guild
