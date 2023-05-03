@@ -12,7 +12,7 @@ jobs:
         docker login -u ${{ secrets.DOCKER_USER }} -p ${{ secrets.DOCKER_PASSWORD }}  
     - name: dockerfile Stage2 Download
       run: |
-        curl -sLo Dockerstage3 https://raw.githubusercontent.com/stakelovelace/cardano-htn/stage3/Dockerfile
+        curl -sLo Dockerstage3 https://raw.githubusercontent.com/stakelovelace/cardano-htn/master/Dockerfile
     - name: Compiling new node software suite
       run: |      
         # Workaround to provide additional free space for builds.
