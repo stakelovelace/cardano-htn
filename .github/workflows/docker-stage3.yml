@@ -1,10 +1,10 @@
 name: Docker Image CD Stage 3
 
-on: 
-  workflow_dispatch:
-  push:
-     paths:
-      - 'release-versions/guild-prereq-latest.txt'
+#on: 
+  #workflow_dispatch:
+  #push:
+  #   paths:
+  #    - 'release-versions/guild-prereq-latest.txt'
 jobs:
   build:
     runs-on: ubuntu-latest
